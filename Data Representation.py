@@ -11,15 +11,15 @@ class graphStockData:
         graphStockData.change_time_series(self)
 
     def change_time_series(self):
-        self.time = input('Enter time series you would like to view: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo?')
+        self.time = input('Enter time series you would like to view: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo or max?')
         graphStockData.graph(self)
 
     def graph(self):
-        ticker = yf.Ticker(self.stockInfo)
-        ticker_history = ticker.history(period=self.time)
-        print((ticker_history['Open']))
+        self.ticker = yf.Ticker(self.stockInfo)
+        self.ticker_history = self.ticker.history(period=self.time)
+        print((self.ticker_history['Open']))
 
-        sf = ticker_history['Open']
+        sf = self.ticker_history['Open']
         df = pd.DataFrame({'Date':sf.index, 'Values':sf.values})
 
         x = df['Date'].tolist()
@@ -31,12 +31,31 @@ class graphStockData:
         plt.show()
 
 
+class predictFuture(graphStockData):
+    def __init__(self):
+        super().__init__()
+        predictFuture.movingAverage(self)
+
+    def movingAverage(self):
+        print(self.ticker)
 
 
 
 
 
 
-y = graphStockData()
-print(y)
+
+
+
+
+
+
+
+
+a = graphStockData()
+print(a)
+b = predictFuture()
+print(b)
+
+
 
