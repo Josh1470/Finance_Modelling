@@ -66,8 +66,6 @@ class graphManyStocks(graphStockData):
     #def chooseStockTimeSeries(self):
 
     def graphStocks(self):
-
-
         pass
 
 choice = input('''Would you like to plot:
