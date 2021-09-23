@@ -1,6 +1,7 @@
 import yfinance as yf
 import matplotlib.pyplot as plt
 import pandas as pd
+import hvplot.pandas
 #import numpy as np
 
 
@@ -45,6 +46,12 @@ class graphStockData:
         plt.xlabel('Date', rotation=0)
         plt.show()
 
+        print(self.stocks)
+        z = input('Would you like to add another stock to compare').lower()
+        if z == 'yes':
+            pass
+
+
 class graphManyStocks(graphStockData):
     def __init__(self):
         super().__init__()
@@ -59,23 +66,9 @@ class graphManyStocks(graphStockData):
     #def chooseStockTimeSeries(self):
 
     def graphStocks(self):
-        self.tickerA = yf.Ticker(self.stockA)
-        self.tickerB = yf.Ticker(self.stockB)
-        self.ticker_historyA = self.tickerA.history(period='max')
-        self.ticker_historyB = self.tickerB.history(period='max')
 
-        sfa = self.ticker_historyA['Open']
-        sfb = self.ticker_historyB['Open']
-        dfa = pd.DataFrame({'Date': sfa.index, 'Values': sfa.values})
-        dfb = pd.DataFrame({'Date': sfb.index, 'Values': sfb.values})
 
-        x = dfa['Date'].tolist() and dfb['Date'].tolist
-        y = dfa['Values'].tolist() and dfb['Values'].tolist()
-
-        plt.plot(x, y)
-        plt.ylabel('Price($)')
-        plt.xlabel('Date', rotation=0)
-        plt.show()
+        pass
 
 choice = input('''Would you like to plot:
                 1: A graph with one stock
