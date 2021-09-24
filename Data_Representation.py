@@ -1,9 +1,7 @@
 import yfinance as yf
 import matplotlib.pyplot as plt
 import pandas as pd
-import hvplot.pandas
 #import numpy as np
-
 
 
 
@@ -28,7 +26,17 @@ class graphStockData:
         print(f'''Availiable time series include : 
               {self.time_series}''')
         self.time = input('What time series would you like to view?')
+        graphStockData.graph_design(self)
+
+    def graph_design(self):
+        self.colourInitial = ['b','g','r','c','m','y','k','w']
+        self.colour = ['blue','green','red','cyan','magenta','yellow','black','white']
+        for i in range(len(self.colourInitial)):
+            print(f'Input {self.colourInitial[i]} for {self.colour[i]}')
+        self.colourChoice = input('What colour would you like?')
         graphStockData.graph(self)
+
+
 
     def graph(self):
         self.ticker = yf.Ticker(self.stockInfo)
@@ -36,20 +44,33 @@ class graphStockData:
         print((self.ticker_history['Open']))
 
         sf = self.ticker_history['Open']
-        df = pd.DataFrame({'Date':sf.index, 'Values':sf.values})
+        self.df = pd.DataFrame({'Date':sf.index, 'Values':sf.values})
 
-        x = df['Date'].tolist()
-        y = df['Values'].tolist()
+        x = self.df['Date'].tolist()
+        y = self.df['Values'].tolist()
 
-        plt.plot(x,y)
+        plt.plot(x, y, self.colourChoice)
         plt.ylabel('Price($)')
         plt.xlabel('Date', rotation=0)
         plt.show()
+        graphStockData.stats(self)
 
-        print(self.stocks)
-        z = input('Would you like to add another stock to compare').lower()
-        if z == 'yes':
-            pass
+    def stats(self):
+        column = self.df["Values"]
+        max_value = column.max()
+        max_value = max_value.round(2)
+        print(f'The maximum value of this stock in the time frame selected is {max_value}')
+
+        min_value = column.min()
+        min_value = min_value.round(2)
+        print(f'The minimum value of this stock in the time frame selected is {min_value}')
+
+        mean_value = column.mean()
+        mean_value = mean_value.round(2)
+        print(f'The mean value of this stock is {mean_value}')
+
+
+
 
 
 class graphManyStocks(graphStockData):
@@ -68,16 +89,11 @@ class graphManyStocks(graphStockData):
     def graphStocks(self):
         pass
 
-choice = input('''Would you like to plot:
-                1: A graph with one stock
-                2: A graph with two stocks''')
 
-if choice == '1':
-    a = graphStockData()
-    print(a)
-elif choice == '2':
-    b = graphManyStocks()
-    print(b)
+a = graphStockData()
+
+
+
 
 
 
