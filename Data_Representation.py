@@ -1,6 +1,7 @@
 import yfinance as yf
 import matplotlib.pyplot as plt
 import pandas as pd
+import hvplot.pandas
 #import numpy as np
 
 
@@ -12,24 +13,24 @@ class graphStockData:
         graphStockData.setOutStock(self)
 
     def setOutStock(self):
-        self.stocks = ['AMZN, O, NNN, LYB, EPD, KMI, R, VALE, FCX, CAT, OSK, NEM, NVDA, TSM, NUE']
+        self.stocks = ['AMZN, AAPL, MSFT, GOOGL, FB, TSLA, NVDA']
         print(f'Stocks include {self.stocks}')
         graphStockData.chooseStock(self)
 
     def chooseStock(self):
         self.stockInfo = input('Enter Stock You Would Like to View')
-        graphStockData.change_time_series(self)
+        graphStockData.changeTimeSeries(self)
         return self.stockInfo
 
 
-    def change_time_series(self):
+    def changeTimeSeries(self):
         print(f'''Availiable time series include : 
               {self.time_series}''')
         self.time = input('What time series would you like to view?')
-        graphStockData.graph_design(self)
+        graphStockData.graphDesign(self)
 
-    def graph_design(self):
-        self.colourInitial = ['b','g','r','c','m','y','k','w']
+    def graphDesign(self):
+        self.colourInitial = ['b', 'g', 'r', 'c', 'm', 'y' ,'k', 'w']
         self.colour = ['blue','green','red','cyan','magenta','yellow','black','white']
         for i in range(len(self.colourInitial)):
             print(f'Input {self.colourInitial[i]} for {self.colour[i]}')
@@ -44,10 +45,17 @@ class graphStockData:
         print((self.ticker_history['Open']))
 
         sf = self.ticker_history['Open']
-        self.df = pd.DataFrame({'Date':sf.index, 'Values':sf.values})
+        self.df = pd.DataFrame({'Date':sf.index, 'Open':sf.values,})
 
         x = self.df['Date'].tolist()
-        y = self.df['Values'].tolist()
+        y = self.df['Open'].tolist()
+
+        self.df['SMA_50'] = self.df['Open'].rolling(window=50).mean()
+        self.df['SMA_100'] = self.df['Open'].rolling(window=100).mean()
+
+        #plt.style.use('ggplot')
+        #ax = self.df.loc['Adj Close']\
+                #.plot(y=['Adj Close', 'SMA_50', 'SMA100'], figsize=(13,10))
 
         plt.plot(x, y, self.colourChoice)
         plt.ylabel('Price($)')
@@ -55,8 +63,10 @@ class graphStockData:
         plt.show()
         graphStockData.stats(self)
 
+
+
     def stats(self):
-        column = self.df["Values"]
+        column = self.df['Open']
         max_value = column.max()
         max_value = max_value.round(2)
         print(f'The maximum value of this stock in the time frame selected is {max_value}')
@@ -68,6 +78,16 @@ class graphStockData:
         mean_value = column.mean()
         mean_value = mean_value.round(2)
         print(f'The mean value of this stock is {mean_value}')
+
+        self.df['SMA_50'] = self.df['Open'].rolling(window=50).mean()
+        self.df['SMA_100'] = self.df['Open'].rolling(window=100).mean()
+
+        print(self.df)
+        graphStockData.plotMA(self)
+
+    def plotMA(self):
+        plt.style.use('ggplot')
+        ax = self.df.loc['Open'].plot(y=['SMA_50', 'SMA_100'])
 
 
 
