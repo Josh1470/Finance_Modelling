@@ -55,7 +55,7 @@ class TwoStocks:
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Stock Grapher")
-    # root.geometry("500x500")
+    root.geometry("500x500")
     TitlePage = TitlePage(root)
     #TitlePage.pack()
     root.mainloop()

@@ -50,8 +50,8 @@ class graphStockData:
         x = self.df['Date'].tolist()
         y = self.df['Open'].tolist()
 
-        self.df['SMA_50'] = self.df['Open'].rolling(window=50).mean()
-        self.df['SMA_100'] = self.df['Open'].rolling(window=100).mean()
+        #self.df['SMA_50'] = self.df['Open'].rolling(window=50).mean()
+        #self.df['SMA_100'] = self.df['Open'].rolling(window=100).mean()
 
         #plt.style.use('ggplot')
         #ax = self.df.loc['Adj Close']\
@@ -66,21 +66,30 @@ class graphStockData:
 
 
     def stats(self):
-        column = self.df['Open']
-        max_value = column.max()
+        self.column = self.df['Open']
+        max_value = self.column.max()
         max_value = max_value.round(2)
         print(f'The maximum value of this stock in the time frame selected is {max_value}')
 
-        min_value = column.min()
+        min_value = self.column.min()
         min_value = min_value.round(2)
         print(f'The minimum value of this stock in the time frame selected is {min_value}')
 
-        mean_value = column.mean()
+        mean_value = self.column.mean()
         mean_value = mean_value.round(2)
         print(f'The mean value of this stock is {mean_value}')
+        graphStockData.calcPercentage(self)
 
-        self.df['SMA_50'] = self.df['Open'].rolling(window=50).mean()
-        self.df['SMA_100'] = self.df['Open'].rolling(window=100).mean()
+    def calcPercentage(self):
+        self.First = self.column[0]
+        self.Last = self.column[-1]
+        self.change = (self.Last / self.First) * 100
+        print(f'The stock {self.stockInfo} has increased by {self.change} in {self.time_series}')
+
+
+
+        #self.df['SMA_50'] = self.df['Open'].rolling(window=50).mean()
+        #self.df['SMA_100'] = self.df['Open'].rolling(window=100).mean()
 
         print(self.df)
         graphStockData.plotMA(self)
