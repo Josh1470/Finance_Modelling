@@ -2,6 +2,7 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 import pandas as pd
 import hvplot.pandas
+from yahoofinancials import YahooFinancials as yF
 #import numpy as np
 
 
@@ -81,22 +82,31 @@ class graphStockData:
         graphStockData.calcPercentage(self)
 
     def calcPercentage(self):
-        self.First = self.column[0]
-        self.Last = self.column[-1]
+        self.First = self.df['Open'].iloc[0]
+        self.Last = self.df['Open'].iloc[-1]
         self.change = (self.Last / self.First) * 100
-        print(f'The stock {self.stockInfo} has increased by {self.change} in {self.time_series}')
+        self.change = self.change.round(2)
+        print(f'The stock {self.stockInfo} has increased by {self.change}% in {self.time}')
+        graphStockData.moreIndicatiors(self)
+
+    def moreIndicatiors(self):
+        self.yahooFinance = yF(self.stockInfo)
+        self.quoteTable = yF.get_pe_ratio(self.yahooFinance)
+        print(f'Price Earnings ratio is {self.quoteTable}')
+
+        self.marketCap = yF.get_market_cap(self.yahooFinance)
+        print(f'Market cap is {self.marketCap}')
+
+
+
+
 
 
 
         #self.df['SMA_50'] = self.df['Open'].rolling(window=50).mean()
         #self.df['SMA_100'] = self.df['Open'].rolling(window=100).mean()
 
-        print(self.df)
-        graphStockData.plotMA(self)
 
-    def plotMA(self):
-        plt.style.use('ggplot')
-        ax = self.df.loc['Open'].plot(y=['SMA_50', 'SMA_100'])
 
 
 
