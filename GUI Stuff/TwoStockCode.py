@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter.messagebox import showinfo
-import TestFunctions as tf
+from Tests import TestFunctions as tf
 
 
 class twoStock(tk.Frame):
@@ -10,13 +10,18 @@ class twoStock(tk.Frame):
         stock1 = 'AAPL'
         stock2 = 'MSFT'
 
-        stocks1 = "AMZN AAPL MSFT GOOGL FB TSLA NVDA"
-        stocks2 = "AMZN AAPL MSFT GOOGL FB TSLA NVDA"
+        stocks = "AMZN AAPL MSFT GOOGL FB TSLA NVDA"
         timeSeries = '1m 2m 5m 15m 30m 60m 90m 1h 1d 5d 1wk 1mo 3mo max'
 
+
         self.stockA = tk.StringVar()
-        self.stockA.set('Please select your first stock')
-        self.stockA.select = tk.OptionMenu(self, self.stockA, stocks1)
+        self.stockAChoice = ttk.Combobox(root, textvariable=self.stockA)
+        self.stockAChoice['values'] = stocks
+        self.stockAChoice['state'] = 'readonly'
+        self.stockAChoice.current(0)
+        self.stockAChoice.grid(row=1, column=0, sticky='news', padx=10, pady=10)
+        self.stockA.trace_add('write', self.getCurrentStockA())
+
 
         self.stockB = tk.StringVar()
         self.stockB.set('Please choose a second stock')
@@ -90,30 +95,7 @@ class twoStock(tk.Frame):
         #self.stockB.bind('<<ComboboxSelected>>', self.stockBChanged)
         self.timeDoubleBox.bind('<<ComboboxSelected>>', self.timeDoubleBoxChanged)
 
-    def stockAChanged(self, event):
-        self.stockAVal = self.stockA.get()
-        print(self.stockAVal)
-
-        self.msgA = f'You selected {self.stockAVal}'
-        print(self.msgA)
-        showinfo(title='Result', message=self.msgA)
-
-    def stockBChanged(self, event):
-        self.stockBVal = self.stockB.get()
-        print(self.stockBVal)
-
-        self.msgB = f'You selected {self.stockBVal}'
-        print(self.msgB)
-        showinfo(title='Result', message=self.msgB)
-
-    def timeDoubleBoxChanged(self, event):
-        self.timeVal = self.timeDoubleBox.get()
-        print(self.timeVal)
-
-        self.timeMsg = f'You selected {self.timeVal}'
-        print(self.timeMsg)
-        showinfo(title='Result', message=self.timeVal)
-
+    def
 
 
 if __name__ == "__main__":

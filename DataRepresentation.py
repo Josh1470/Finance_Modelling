@@ -21,7 +21,6 @@ class graphStockData:
     def chooseStock(self):
         self.stockInfo = input('Enter Stock You Would Like to View')
         graphStockData.changeTimeSeries(self)
-        return self.stockInfo
 
 
     def changeTimeSeries(self):
@@ -96,6 +95,13 @@ class graphStockData:
 
         self.marketCap = yF.get_market_cap(self.yahooFinance)
         print(f'Market cap is {self.marketCap}')
+
+
+
+class oneStockTests(graphStockData):
+    def __init__(self):
+        super().__init__()
+
 
 
 

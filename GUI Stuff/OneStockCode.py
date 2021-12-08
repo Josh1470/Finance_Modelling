@@ -1,8 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter.messagebox import showinfo
-import TestFunctions as tf
+from Tests import TestFunctions as tf
+import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import random
 
 
 class oneStock(tk.Frame):
@@ -10,22 +12,25 @@ class oneStock(tk.Frame):
         super().__init__()
         self.timeVal = '5d'
 
-
-        stocks = "AMZN AAPL MSFT GOOGL FB TSLA NVDA"
-        self.box = ttk.Combobox(root, textvariable=stocks)
-        #self.box.set('aapl')
-        self.box['values'] = stocks
-        self.box['state'] = 'readonly'
-
-
-
+        stocks = 'AMZN AAPL MSFT GOOGL FB TSLA NVDA'
+        self.box = tk.StringVar()
+        self.boxChoice = ttk.Combobox(root, textvariable=self.box)
+        self.boxChoice['values'] = stocks
+        self.boxChoice['state'] = 'readonly'
+        self.boxChoice.current(0)
+        self.boxChoice.grid(row=1, column=0, sticky='news', padx=10, pady=10)
+        self.box.trace_add('write', self.getCurrentStock())
 
 
         timeSeries = '1m 2m 5m 15m 30m 60m 90m 1h 1d 5d 1wk 1mo 3mo max'
-        self.timeBox = ttk.Combobox(root, textvariable=timeSeries)
-        #self.timeBox.set('Please choose a time series')
-        self.timeBox['values'] = timeSeries
-        self.timeBox['state'] = 'readonly'
+        timeSeries = timeSeries.split()
+        self.timeBox = tk.StringVar()
+        self.timeBox_choice = ttk.Combobox(root, textvariable=timeSeries)
+        self.timeBox_choice['values'] = timeSeries
+        self.timeBox_choice['state'] = 'readonly'
+        self.timeBox_choice.current(0)
+        self.timeBox_choice.grid(row=2, column=0, sticky='news', padx=10, pady=10)
+        self.timeBox.trace_add('write', self.getCurrentTimeSeries())
 
 
         self.title = tk.Label(text='Graph One Stock', bg='Brown')
@@ -33,15 +38,15 @@ class oneStock(tk.Frame):
         self.homePage = tk.Button(text='Click to return to main menu', bg='orange', command=master.destroy)
         self.help = tk.Button(text='Click here for some help', bg='grey', command=master.destroy)
         self.twoStock = tk.Button(text='Click here to go to the two stock page', bg='red', command=master.destroy)
-        self.graph = tk.Label(text=tf.graphStock("AAPL"), bg='green')
+        self.graph = tk.Label(text=self.graphCurrentStock(self.getCurrentStock()), bg='green')
 
-        self.mean = tk.Label(bg='#5C7AB9', text=f'The mean of the stock in the time frame is ${tf.getMean("AAPL")}')
-        self.max = tk.Label(bg='#5C7AB9', text=f'The max of the stock in the time frame is ${tf.getMax("AAPL")}')
-        self.min = tk.Label(bg='#5C7AB9', text=f'The min of the stock in the time frame is ${tf.getMin("AAPL")}')
-        self.median = tk.Label(bg='#5C7AB9', text=f'The median of the stock in the time frame is ${tf.getMedian("AAPL")}')
-        self.mode = tk.Label(bg='#5C7AB9', text=f'The range of this stock in the time frame is ${tf.getRange("AAPL")}')
+        self.mean = tk.Label(bg='#5C7AB9', text=f'The mean of the stock in the time frame is ${tf.getMean(self.getCurrentStock(), self.getCurrentTimeSeries())}')
+        self.max = tk.Label(bg='#5C7AB9', text=f'The max of the stock in the time frame is ${tf.getMax(self.getCurrentStock(), self.getCurrentTimeSeries())}')
+        self.min = tk.Label(bg='#5C7AB9', text=f'The min of the stock in the time frame is ${tf.getMin(self.getCurrentStock(), self.getCurrentTimeSeries())}')
+        self.median = tk.Label(bg='#5C7AB9', text=f'The median of the stock in the time frame is ${tf.getMedian(self.getCurrentStock(), self.getCurrentTimeSeries())}')
+        self.mode = tk.Label(bg='#5C7AB9', text=f'The range of this stock in the time frame is ${tf.getRange(self.getCurrentStock(), self.getCurrentTimeSeries())}')
 
-        self.PC = tk.Label(bg='#5C7AB9', text=f'The Percentage change of this stock in the time frame is {tf.perChange("AAPL")}%')
+        self.PC = tk.Label(bg='#5C7AB9', text=f'The Percentage change of this stock in the time frame is {tf.perChange(self.getCurrentStock(), self.getCurrentTimeSeries())}%')
         self.peRatio = tk.Label(bg='#5C7AB9', text=f'The price to earnings ratio of this stock in the time frame is {tf.peRatio("AAPL")}')
         self.marketCap = tk.Label(bg='#5C7AB9', text=f'The market cap of this stock in the time frame {tf.marketCap("AAPL")}T')
         self.yearlyHigh = tk.Label(bg='#5C7AB9', text=f'The yearly high of this stock is ${tf.getYearlyLow("AAPL")}')
@@ -49,8 +54,6 @@ class oneStock(tk.Frame):
 
 
         self.title.grid(row=0, column=0, columnspan=12, sticky='news')
-        self.box.grid(row=1, column=0, columnspan=1, sticky='news', padx=10, pady=10)
-        self.timeBox.grid(row=2, column=0, columnspan=1, sticky='news', padx=10, pady=10)
 
         self.mean.grid(row=4, column=0, rowspan=1, sticky='news', pady=5, padx=5)
         self.max.grid(row=5, column=0, rowspan=1, sticky='news', pady=5, padx=5)
@@ -64,25 +67,46 @@ class oneStock(tk.Frame):
         self.yearlyLow.grid(row=13, column=0, rowspan=1, sticky='news', pady=5, padx=5)
 
         self.homePage.grid(row=14,column=0, columnspan=9, sticky='news')
-        self.graph.grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=5, pady=5)
         self.help.grid(row=15, column=0, columnspan=9, sticky='news')
         self.twoStock.grid(row=14, column=10, rowspan=2, columnspan=2, sticky='news')
 
-        self.box.bind('<<ComboboxSelected>>', self.stocksChanged)
-        self.timeBox.bind('<<ComboboxSelected>>', self.timeChanged)
-
-    def stocksChanged(self, event):
-        self.boxVal = 'aapl'
-        return self.boxVal
 
 
-    def timeChanged(self, event):
-        self.timeVal = self.timeBox.get()
-        print(self.timeVal)
+    def getCurrentStock(self):
+        self.normal = root.state()
+        if oneStock is not self.normal:
+            return 'AMZN'
+        elif oneStock is self.normal:
+            currentStock = self.box.get()
+            return currentStock
 
-        self.timeMsg = f'You selected {self.timeVal}'
-        print(self.timeMsg)
-        showinfo(title='result', message=self.timeMsg)
+    def getCurrentTimeSeries(self):
+        self.normal = root.state()
+        if oneStock is not self.normal:
+            return '1mo'
+        elif oneStock is self.normal:
+            currentTime = self.timeBox.get()
+            self.update()
+            return currentTime
+
+    def getCurrentDataFrame(self, stock, timeseries):
+        df = tf.getDataFrame(stock, self.getCurrentTimeSeries())
+        return df
+
+    def update(self):
+        pass
+
+
+    def graphCurrentStock(self, stock):
+        figure = plt.figure(figsize=(4,4), dpi=100)
+        ax = figure.add_subplot(111)
+        chart_type = FigureCanvasTkAgg(figure, root)
+        xlabel = 'Date of Stocks'
+        ylabel = 'Price($)'
+        chart_type.get_tk_widget().grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=20, pady=20)
+        df = self.getCurrentDataFrame(stock, self.getCurrentTimeSeries())
+        df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel )
+        plt.gcf().canvas.draw()
 
 
 

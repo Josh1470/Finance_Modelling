@@ -1,10 +1,10 @@
 import unittest
-import TestFunctions as tF
+from Tests import TestFunctions as tF
 
 
 class graphTesting(unittest.TestCase):
     def testMean(self):
-        self.assertEqual(tF.getMean("AAPL"), 11.72)
+        self.assertEqual(tF.getMean("AAPL"), 12.17)
 
     def testMax(self):
         self.assertEqual(tF.getMax("AAPL"), 156.98)

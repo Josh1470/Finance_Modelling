@@ -7,64 +7,53 @@ from matplotlib.figure import Figure
 import statistics
 
 
-def getDataFrame(stock):
+def getDataFrame(stock, timeseries):
     ticker = yf.Ticker(stock)
-    tickerHistory = ticker.history(period='3mo')
+    tickerHistory = ticker.history(period=timeseries)
     sf = tickerHistory['Open']
     df = pd.DataFrame({'Date': sf.index, 'Open': sf.values})
     return df['Open']
 
 
-def getMean(stock):
-    column = getDataFrame(stock)
+def getMean(stock, timeseries):
+    column = getDataFrame(stock, timeseries)
     meanUnr = column.mean()
     meanRou = round(meanUnr, 2)
     return meanRou
 
 
-def getMin(stock):
-    column = getDataFrame(stock)
+def getMin(stock, timeseries):
+    column = getDataFrame(stock, timeseries)
     minUnr = column.min()
     minRou = round(minUnr, 2)
     return minRou
 
  
-def getMax(stock):
-    column = getDataFrame(stock)
+def getMax(stock, timeseries):
+    column = getDataFrame(stock, timeseries)
     maxUnr = column.max()
     maxRou = round(maxUnr, 2)
     return maxRou
 
 
-def getMedian(stock):
-    column = getDataFrame(stock)
+def getMedian(stock, timeseries):
+    column = getDataFrame(stock, timeseries)
     medUnr = column.median()
     medRou = round(medUnr, 2)
     return medRou
 
 
-def getRange(stock):
-    column = getDataFrame(stock)
+def getRange(stock, timeseries):
+    column = getDataFrame(stock, timeseries)
     Max = column.max()
     Min = column.min()
     ranUnr = Max - Min
     ranRou = round(ranUnr, 2)
     return ranRou
 
-def graphStock(stock):
-    ticker = yf.Ticker(stock)
-    ticker_history = ticker.history(period='max')
-    plt.plot(getDataFrame(stock))
-    ax = plt.gca
-    return plt.gcf().canvas.draw()
 
-
-
-
-
-
-def perChange(stock):
-    column = getDataFrame(stock)
+def perChange(stock, timeseries):
+    column = getDataFrame(stock, timeseries)
     First = column.iloc[0]
     Last = column.iloc[-1]
     changeUnr = (Last / First) * 100
