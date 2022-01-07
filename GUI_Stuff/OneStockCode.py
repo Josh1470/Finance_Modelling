@@ -10,7 +10,6 @@ import random
 class oneStock(tk.Frame):
     def __init__(self, master):
         super().__init__()
-        self.timeVal = '5d'
 
         stocks = 'AMZN AAPL MSFT GOOGL FB TSLA NVDA'
         self.box = tk.StringVar()
@@ -105,7 +104,7 @@ class oneStock(tk.Frame):
         ylabel = 'Price($)'
         chart_type.get_tk_widget().grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=20, pady=20)
         df = self.getCurrentDataFrame(stock, self.getCurrentTimeSeries())
-        df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel )
+        df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel, title=f"{self.getCurrentStock().upper()}'s stock history in {self.getCurrentStock()}")
         plt.gcf().canvas.draw()
 
 
