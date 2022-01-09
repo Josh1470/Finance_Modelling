@@ -1,8 +1,9 @@
-import yfinance as yf
 import matplotlib.pyplot as plt
 import pandas as pd
-import hvplot.pandas
+import yfinance as yf
 from yahoofinancials import YahooFinancials as yF
+
+
 #import numpy as np
 
 
@@ -11,6 +12,11 @@ class graphStockData:
     def __init__(self):
         self.time_series = ['1m, 2m , 5m, 15m, 30m, 60m, 90m, 1h, 1d, 5d, 1wk, 1mo, 3mo and max']
         self.time = 0
+        graphStockData.stockList(self)
+
+    def stockList(self):
+        self.stocksListShort = ['AMZN','AAPL','MSFT','GOOGL','FB','TSLA','NVDA']
+        self.stocksListLong = ['Amazon','Apple','Microsoft','Google','Facebook','Tesla','Nvidia']
         graphStockData.setOutStock(self)
 
     def setOutStock(self):
@@ -35,6 +41,21 @@ class graphStockData:
         for i in range(len(self.colourInitial)):
             print(f'Input {self.colourInitial[i]} for {self.colour[i]}')
         self.colourChoice = input('What colour would you like?')
+        if self.stockInfo in self.stocksListShort:
+            graphStockData.getStockName(self)
+        else:
+            self.stockNameLong = self.stockInfo
+            graphStockData.graph(self)
+
+    def getStockName(self):
+        global number
+        for i in range(len(self.stocksListShort)):
+            if self.stockInfo == self.stocksListShort[i]:
+                self.stockNameShort = self.stocksListShort[i]
+                number = i
+                break
+
+        self.stockNameLong = self.stocksListLong[number]
         graphStockData.graph(self)
 
 
@@ -50,16 +71,11 @@ class graphStockData:
         x = self.df['Date'].tolist()
         y = self.df['Open'].tolist()
 
-        #self.df['SMA_50'] = self.df['Open'].rolling(window=50).mean()
-        #self.df['SMA_100'] = self.df['Open'].rolling(window=100).mean()
-
-        #plt.style.use('ggplot')
-        #ax = self.df.loc['Adj Close']\
-                #.plot(y=['Adj Close', 'SMA_50', 'SMA100'], figsize=(13,10))
 
         plt.plot(x, y, self.colourChoice)
         plt.ylabel('Price($)')
         plt.xlabel('Date', rotation=0)
+        plt.title(f'Graph of {self.stockNameLong}')
         plt.show()
         graphStockData.stats(self)
 

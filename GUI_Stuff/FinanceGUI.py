@@ -5,7 +5,7 @@ from GUI_Stuff import TwoStockCode as TSC
 
 
 class TitlePage(tk.Frame):
-    def __init__(self, master, controller):
+    def __init__(self, master):
         super().__init__()
 
         self.title = tk.Label(text='Stock Grapher', font=('Arial', 14), bg='red')

@@ -10,20 +10,18 @@ import random
 class oneStock(tk.Frame):
     def __init__(self, master):
         super().__init__()
-        self.timeVal = '5d'
 
         stocks = 'AMZN AAPL MSFT GOOGL FB TSLA NVDA'
         self.box = tk.StringVar()
         self.boxChoice = ttk.Combobox(root, textvariable=self.box)
         self.boxChoice['values'] = stocks
         self.boxChoice['state'] = 'readonly'
-        self.boxChoice.current(0)
+        self.boxChoice.current(2)
         self.boxChoice.grid(row=1, column=0, sticky='news', padx=10, pady=10)
         self.box.trace_add('write', self.getCurrentStock())
 
 
         timeSeries = '1m 2m 5m 15m 30m 60m 90m 1h 1d 5d 1wk 1mo 3mo max'
-        timeSeries = timeSeries.split()
         self.timeBox = tk.StringVar()
         self.timeBox_choice = ttk.Combobox(root, textvariable=timeSeries)
         self.timeBox_choice['values'] = timeSeries
@@ -74,10 +72,11 @@ class oneStock(tk.Frame):
 
     def getCurrentStock(self):
         self.normal = root.state()
-        if oneStock is not self.normal:
+        if self.box.get == 'AMZN':
             return 'AMZN'
-        elif oneStock is self.normal:
+        else:
             currentStock = self.box.get()
+            root.destroy()
             return currentStock
 
     def getCurrentTimeSeries(self):
@@ -86,7 +85,7 @@ class oneStock(tk.Frame):
             return '1mo'
         elif oneStock is self.normal:
             currentTime = self.timeBox.get()
-            self.update()
+            root.destroy()
             return currentTime
 
     def getCurrentDataFrame(self, stock, timeseries):
