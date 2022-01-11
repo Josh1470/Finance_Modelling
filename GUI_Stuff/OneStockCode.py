@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import Tk
 from tkinter import ttk
 from tkinter.messagebox import showinfo
 from Tests import TestFunctions as tf
@@ -11,12 +12,12 @@ class oneStock(tk.Frame):
     def __init__(self, master):
         super().__init__()
 
-        stocks = 'AMZN AAPL MSFT GOOGL FB TSLA NVDA'
+        stocks = ['AMZN','AAPL', 'MSFT',  'GOOGL',  'FB',  'TSLA', 'NVDA']
         self.box = tk.StringVar()
         self.boxChoice = ttk.Combobox(root, textvariable=self.box)
         self.boxChoice['values'] = stocks
         self.boxChoice['state'] = 'readonly'
-        self.boxChoice.current(2)
+        self.boxChoice.current(0)
         self.boxChoice.grid(row=1, column=0, sticky='news', padx=10, pady=10)
         self.box.trace_add('write', self.getCurrentStock())
 
@@ -71,13 +72,11 @@ class oneStock(tk.Frame):
 
 
     def getCurrentStock(self):
-        self.normal = root.state()
-        if self.box.get == 'AMZN':
-            return 'AMZN'
+        if self.box.get() != 'AMZN':
+            self.update()
+            return self.box.get()
         else:
-            currentStock = self.box.get()
-            root.destroy()
-            return currentStock
+            return 'AMZN'
 
     def getCurrentTimeSeries(self):
         self.normal = root.state()
@@ -93,7 +92,8 @@ class oneStock(tk.Frame):
         return df
 
     def update(self):
-        pass
+        self.destroy()
+        self.__init__(self)
 
 
     def graphCurrentStock(self, stock):
@@ -104,7 +104,7 @@ class oneStock(tk.Frame):
         ylabel = 'Price($)'
         chart_type.get_tk_widget().grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=20, pady=20)
         df = self.getCurrentDataFrame(stock, self.getCurrentTimeSeries())
-        df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel, title=f"{self.getCurrentStock().upper()}'s stock history in {self.getCurrentStock()}")
+        df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel, title=f"{self.getCurrentStock().upper()}'s stock history in {self.getCurrentTimeSeries()}")
         plt.gcf().canvas.draw()
 
 

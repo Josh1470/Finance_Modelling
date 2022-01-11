@@ -5,6 +5,7 @@ from yahoofinancials import YahooFinancials as yF
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
 import statistics
+from GUI_Stuff import OneStockCode
 
 
 def getDataFrame(stock, timeseries):
@@ -84,7 +85,5 @@ def getYearlyLow(stock):
     yLRou = round(yL, 2)
     return yLRou
 
-def getCurrentStock(stock):
-    return stock
 
 
