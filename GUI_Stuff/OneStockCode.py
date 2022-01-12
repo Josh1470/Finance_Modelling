@@ -12,7 +12,7 @@ class oneStock(tk.Frame):
     def __init__(self, master):
         super().__init__()
 
-        stocks = ['AMZN','AAPL', 'MSFT',  'GOOGL',  'FB',  'TSLA', 'NVDA']
+        stocks = 'AMZN AAPL MSFT  GOOGL  FB  TSLA NVDA'
         self.box = tk.StringVar()
         self.boxChoice = ttk.Combobox(textvariable=self.box)
         self.boxChoice['values'] = stocks
@@ -27,29 +27,29 @@ class oneStock(tk.Frame):
         self.timeBox_choice = ttk.Combobox(textvariable=timeSeries)
         self.timeBox_choice['values'] = timeSeries
         self.timeBox_choice['state'] = 'readonly'
-        self.timeBox_choice.current(0)
+        self.timeBox_choice.current(12)
         self.timeBox_choice.grid(row=2, column=0, sticky='news', padx=10, pady=10)
         self.timeBox.trace_add('write', self.getCurrentTimeSeries())
 
 
-        self.title = tk.Label(self, text='Graph One Stock', bg='Brown')
+        self.title = tk.Label(text='Graph One Stock', bg='Brown')
 
-        self.homePage = tk.Button(self, text='Click to return to main menu', bg='orange', command=master.destroy)
-        self.help = tk.Button(self, text='Click here for some help', bg='grey', command=master.destroy)
-        self.twoStock = tk.Button(self, text='Click here to go to the two stock page', bg='red', command=master.destroy)
-        self.graph = tk.Label(self, text=self.graphCurrentStock(self.getCurrentStock()), bg='green')
+        self.homePage = tk.Button(text='Click to return to main menu', bg='orange', command=master.destroy)
+        self.help = tk.Button(text='Click here for some help', bg='grey', command=master.destroy)
+        self.twoStock = tk.Button(text='Click here to go to the two stock page', bg='red', command=master.destroy)
+        self.graph = tk.Label(text=self.graphCurrentStock(self.getCurrentStock()), bg='green')
 
-        self.mean = tk.Label(self, bg='#5C7AB9', text=f'The mean of the stock in the time frame is ${tf.getMean(self.getCurrentStock(), self.getCurrentTimeSeries())}')
-        self.max = tk.Label(self, bg='#5C7AB9', text=f'The max of the stock in the time frame is ${tf.getMax(self.getCurrentStock(), self.getCurrentTimeSeries())}')
-        self.min = tk.Label(self, bg='#5C7AB9', text=f'The min of the stock in the time frame is ${tf.getMin(self.getCurrentStock(), self.getCurrentTimeSeries())}')
-        self.median = tk.Label(self, bg='#5C7AB9', text=f'The median of the stock in the time frame is ${tf.getMedian(self.getCurrentStock(), self.getCurrentTimeSeries())}')
-        self.mode = tk.Label(self, bg='#5C7AB9', text=f'The range of this stock in the time frame is ${tf.getRange(self.getCurrentStock(), self.getCurrentTimeSeries())}')
+        self.mean = tk.Label(bg='#5C7AB9', text=f'The mean of the stock in the time frame is ${tf.getMean(self.getCurrentStock(), self.getCurrentTimeSeries())}')
+        self.max = tk.Label(bg='#5C7AB9', text=f'The max of the stock in the time frame is ${tf.getMax(self.getCurrentStock(), self.getCurrentTimeSeries())}')
+        self.min = tk.Label(bg='#5C7AB9', text=f'The min of the stock in the time frame is ${tf.getMin(self.getCurrentStock(), self.getCurrentTimeSeries())}')
+        self.median = tk.Label(bg='#5C7AB9', text=f'The median of the stock in the time frame is ${tf.getMedian(self.getCurrentStock(), self.getCurrentTimeSeries())}')
+        self.mode = tk.Label(bg='#5C7AB9', text=f'The range of this stock in the time frame is ${tf.getRange(self.getCurrentStock(), self.getCurrentTimeSeries())}')
 
-        self.PC = tk.Label(self, bg='#5C7AB9', text=f'The Percentage change of this stock in the time frame is {tf.perChange(self.getCurrentStock(), self.getCurrentTimeSeries())}%')
-        self.peRatio = tk.Label(self, bg='#5C7AB9', text=f'The price to earnings ratio of this stock in the time frame is {tf.peRatio("AAPL")}')
-        self.marketCap = tk.Label(self, bg='#5C7AB9', text=f'The market cap of this stock in the time frame {tf.marketCap("AAPL")}T')
-        self.yearlyHigh = tk.Label(self, bg='#5C7AB9', text=f'The yearly high of this stock is ${tf.getYearlyLow("AAPL")}')
-        self.yearlyLow = tk.Label(self, bg='#5C7AB9', text=f'The yearly low of this stock is ${tf.getYearlyHigh("AAPL")}')
+        self.PC = tk.Label(bg='#5C7AB9', text=f'The Percentage change of this stock in the time frame is {tf.perChange(self.getCurrentStock(), self.getCurrentTimeSeries())}%')
+        self.peRatio = tk.Label(bg='#5C7AB9', text=f'The price to earnings ratio of this stock in the time frame is {tf.peRatio(self.getCurrentStock())}')
+        self.marketCap = tk.Label(bg='#5C7AB9', text=f'The market cap of this stock in the time frame {tf.marketCap(self.getCurrentStock())}T')
+        self.yearlyHigh = tk.Label(bg='#5C7AB9', text=f'The yearly high of this stock is ${tf.getYearlyHigh(self.getCurrentStock())}')
+        self.yearlyLow = tk.Label(bg='#5C7AB9', text=f'The yearly low of this stock is ${tf.getYearlyLow(self.getCurrentStock())}')
 
 
         self.title.grid(row=0, column=0, columnspan=12, sticky='news')
@@ -71,14 +71,15 @@ class oneStock(tk.Frame):
 
 
 
-    def getCurrentStock(self):
-        if self.box.get() != 'AMZN':
-            self.update()
-            return self.box.get()
-        else:
-            return 'AMZN'
+    def getCurrentStock(*args):
+        # if self.box.get() != 'AMZN':
+        #     self.update()
+        #     return self.box.get()
+        # else:
+        #     return 'AMZN'
+        return 'AMZN'
 
-    def getCurrentTimeSeries(self):
+    def getCurrentTimeSeries(*args):
         return '3mo'
 
     def getCurrentDataFrame(self, stock, timeseries):
@@ -97,7 +98,7 @@ class oneStock(tk.Frame):
         xlabel = 'Date of Stocks'
         ylabel = 'Price($)'
         chart_type.get_tk_widget().grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=20, pady=20)
-        df = self.getCurrentDataFrame(stock, self.getCurrentTimeSeries())
+        df = tf.x
         df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel, title=f"{self.getCurrentStock().upper()}'s stock history in {self.getCurrentTimeSeries()}")
         plt.gcf().canvas.draw()
 
@@ -108,6 +109,6 @@ if __name__ == "__main__":
     root.title("Stock Grapher")
     root.geometry("750x750")
     oneStock = oneStock(root)
-    root.withdraw()
     # oneStock.pack()
     root.mainloop()
+

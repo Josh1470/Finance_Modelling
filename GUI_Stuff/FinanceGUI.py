@@ -18,7 +18,7 @@ class App(tk.Tk):
         # container.grid_columnconfigure(0, weight=1)
 
         self.frames = {'Main Menu': TitlePage(self),
-                       'First Page': OneStock(self),
+                       'First Page': oneStock(self),
                        'Second Page': TwoStock(self)}
         # for F in (TitlePage, OneStock, TwoStock):
         #     # page_name = F.__name__
@@ -35,7 +35,7 @@ class App(tk.Tk):
         for w in widgets:
             if w.winfo_class() == 'Frame':
                 w.pack_forget()
-        frame.pack(expand=True, fill=tk.BOTH)
+        #frame.pack(expand=True, fill=tk.BOTH)
         #frame.tkraise(self)
 
 
@@ -63,7 +63,8 @@ class TitlePage(tk.Frame):
 
 
 
-class OneStock(tk.Frame):
+
+class oneStock(tk.Frame):
     def __init__(self, controller):
         tk.Frame.__init__(self)
         stocks = ['AMZN', 'AAPL', 'MSFT', 'GOOGL', 'FB', 'TSLA', 'NVDA']
@@ -86,9 +87,9 @@ class OneStock(tk.Frame):
 
         self.title = tk.Label(self, text='Graph One Stock', bg='Brown')
 
-        self.homePage = tk.Button(self, text='Click to return to main menu', bg='orange')
+        self.homePage = tk.Button(self, text='Click to return to main menu', bg='orange', command=lambda: controller.show_frame("Main Menu"))
         self.help = tk.Button(self, text='Click here for some help', bg='grey')
-        self.twoStock = tk.Button(self, text='Click here to go to the two stock page', bg='red')
+        self.twoStock = tk.Button(self, text='Click here to go to the two stock page', bg='red', command=lambda: controller.show_frame("Second Page"))
         self.graph = tk.Label(self, text=self.graphCurrentStock(self.getCurrentStock()), bg='green')
 
         self.mean = tk.Label(self, bg='#5C7AB9',
@@ -130,14 +131,10 @@ class OneStock(tk.Frame):
         self.help.grid(row=15, column=0, columnspan=9, sticky='news')
         self.twoStock.grid(row=14, column=10, rowspan=2, columnspan=2, sticky='news')
 
-    def getCurrentStock(self):
-        if self.box.get() != 'AMZN':
-            self.update()
-            return self.box.get()
-        else:
-            return 'AMZN'
+    def getCurrentStock(*args):
+        return 'AMZN'
 
-    def getCurrentTimeSeries(self):
+    def getCurrentTimeSeries(*args):
         return '3mo'
 
     def getCurrentDataFrame(self, stock, timeseries):
@@ -155,7 +152,7 @@ class OneStock(tk.Frame):
         xlabel = 'Date of Stocks'
         ylabel = 'Price($)'
         chart_type.get_tk_widget().grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=20, pady=20)
-        df = self.getCurrentDataFrame(stock, self.getCurrentTimeSeries())
+        df = tf.x
         df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel,
                 title=f"{self.getCurrentStock().upper()}'s stock history in {self.getCurrentTimeSeries()}")
         plt.gcf().canvas.draw()
@@ -170,4 +167,5 @@ class TwoStock(tk.Frame):
 
 if __name__ == "__main__":
     app = App()
+    app.geometry("750x750")
     app.mainloop()
