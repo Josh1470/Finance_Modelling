@@ -27,7 +27,7 @@ class oneStock(tk.Frame):
         self.timeBox_choice = ttk.Combobox(textvariable=timeSeries)
         self.timeBox_choice['values'] = timeSeries
         self.timeBox_choice['state'] = 'readonly'
-        self.timeBox_choice.current(12)
+        self.timeBox_choice.current(13)
         self.timeBox_choice.grid(row=2, column=0, sticky='news', padx=10, pady=10)
         self.timeBox.trace_add('write', self.getCurrentTimeSeries())
 
@@ -80,7 +80,7 @@ class oneStock(tk.Frame):
         return 'AMZN'
 
     def getCurrentTimeSeries(*args):
-        return '3mo'
+        return 'max'
 
     def getCurrentDataFrame(self, stock, timeseries):
         df = tf.getDataFrame(stock, self.getCurrentTimeSeries())

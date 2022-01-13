@@ -17,11 +17,11 @@ def getDataFrame(stock, timeseries):
     return df['Open']
 
 def getStock(*args):
-    stock = FG.oneStock.getCurrentStock()
+    stock = OSC.oneStock.getCurrentStock()
     return stock
 
 def getTimeSeries(*args):
-    timeseries = FG.oneStock.getCurrentTimeSeries()
+    timeseries = OSC.oneStock.getCurrentTimeSeries()
     return timeseries
 
 x = getDataFrame(getStock(), getTimeSeries())
