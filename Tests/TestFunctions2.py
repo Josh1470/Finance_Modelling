@@ -5,8 +5,9 @@ from yahoofinancials import YahooFinancials as yF
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
 import statistics
-from GUI_Stuff import OneStockCode as OSC
-from GUI_Stuff import FinanceGUI as FG
+from GUI_Stuff import TwoStockCode as TSC
+
+
 
 
 def getDataFrame(stock, timeseries):
@@ -16,6 +17,7 @@ def getDataFrame(stock, timeseries):
     df = pd.DataFrame({'Date': sf.index, 'Open': sf.values})
     return df['Open']
 
+
 def getStockDataFrame(stock, timeseries):
     ticker = yf.Ticker(stock)
     tickerHistory = ticker.history(period=timeseries)
@@ -24,48 +26,60 @@ def getStockDataFrame(stock, timeseries):
     return df
 
 
-def getStock(*args):
-    stock = OSC.oneStock.getCurrentStock()
-    return stock
+# def getStockA(*args):
+#     stock = TSC.twoStock.getCurrentStockA()
+#     return stock
+#
+# def getStockB(*args):
+#     stock = TSC.twoStock.getCurrentStockB()
+#     return stock
+#
+#
+# def getTimeSeries(*args):
+#     timeseries = TSC.twoStock.getCurrentTimeSeries()
+#     return timeseries
+#
+#
+# x = getDataFrame(getStockA(), getTimeSeries())
+# y = getDataFrame(getStockB(), getTimeSeries())
+#
+# stock = [x, y]
 
-def getTimeSeries(*args):
-    timeseries = OSC.oneStock.getCurrentTimeSeries()
-    return timeseries
-
-x = getDataFrame(getStock(), getTimeSeries())
-
-
-
-def getMean(stock, timeseries):
-    column = x
+def getMean(stock, timeseries, df):
+    column = df
     meanUnr = column.mean()
     meanRou = round(meanUnr, 2)
     return meanRou
 
 
-def getMin(stock, timeseries):
-    column = x
+
+
+def getMin(stock, timeseries, df):
+    column = df
     minUnr = column.min()
     minRou = round(minUnr, 2)
     return minRou
 
- 
-def getMax(stock, timeseries):
-    column = x
+
+
+
+def getMax(stock, timeseries, df):
+    column = df
     maxUnr = column.max()
     maxRou = round(maxUnr, 2)
     return maxRou
 
 
-def getMedian(stock, timeseries):
-    column = x
+
+def getMedian(stock, timeseries, df):
+    column = df
     medUnr = column.median()
     medRou = round(medUnr, 2)
     return medRou
 
 
-def getRange(stock, timeseries):
-    column = x
+def getRange(stock, timeseries, df):
+    column = df
     Max = column.max()
     Min = column.min()
     ranUnr = Max - Min
@@ -73,13 +87,14 @@ def getRange(stock, timeseries):
     return ranRou
 
 
-def perChange(stock, timeseries):
-    column = x
+def perChange(stock, timeseries, df):
+    column = df
     First = column.iloc[0]
     Last = column.iloc[-1]
     changeUnr = (Last / First) * 100
     changeRou = changeUnr.round(2)
     return changeRou
+
 
 def peRatio(stock):
     yahooFinance = yF(stock)
@@ -87,23 +102,11 @@ def peRatio(stock):
     ratioRou = round(quoteTable, 2)
     return ratioRou
 
+
 def marketCap(stock):
     yahooFinance = yF(stock)
     mc = yF.get_market_cap(yahooFinance)
     mcRou = round(mc / 1000000000000, 2)
     return mcRou
-
-def getYearlyHigh(stock):
-    yahooFinance = yF(stock)
-    yH = yF.get_yearly_high(yahooFinance)
-    yHRou = round(yH, 2)
-    return yHRou
-
-def getYearlyLow(stock):
-    yahooFinance = yF(stock)
-    yL = yF.get_yearly_low(yahooFinance)
-    yLRou = round(yL, 2)
-    return yLRou
-
 
 

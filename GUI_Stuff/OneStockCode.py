@@ -17,7 +17,7 @@ class oneStock(tk.Frame):
         self.boxChoice = ttk.Combobox(textvariable=self.box)
         self.boxChoice['values'] = stocks
         self.boxChoice['state'] = 'readonly'
-        self.boxChoice.current(0)
+        self.boxChoice.current(1)
         self.boxChoice.grid(row=1, column=0, sticky='news', padx=10, pady=10)
         self.box.trace_add('write', self.getCurrentStock())
 
@@ -71,20 +71,45 @@ class oneStock(tk.Frame):
 
 
 
+
+    def split(self, word):
+        return [char for char in word]
+
+
+
     def getCurrentStock(*args):
         # if self.box.get() != 'AMZN':
         #     self.update()
         #     return self.box.get()
         # else:
         #     return 'AMZN'
-        return 'AMZN'
+        return 'AAPL'
 
     def getCurrentTimeSeries(*args):
         return 'max'
 
-    def getCurrentDataFrame(self, stock, timeseries):
-        df = tf.getDataFrame(stock, self.getCurrentTimeSeries())
-        return df
+    def graphTitle(self):
+        stock = self.getCurrentStock()
+        temp = self.split(stock)
+        if temp[0] == 'A':
+            if temp[1] == 'M':
+                return 'Amazon'
+            elif temp[1] == 'A':
+                return 'Apple'
+        elif temp[0] == 'M':
+            return 'Microsoft'
+        elif temp[0] == 'G':
+            return 'Google'
+        elif temp[0] == 'F':
+            return 'Facebook'
+        elif temp[0] == 'T':
+            return 'Telsa'
+        elif temp[0] == 'N':
+            return 'Nvidia'
+
+
+
+
 
     def update(self):
         self.destroy()
@@ -92,14 +117,15 @@ class oneStock(tk.Frame):
 
 
     def graphCurrentStock(self, stock):
+        self.df = tf.getStockDataFrame(self.getCurrentStock(), self.getCurrentTimeSeries())
         figure = plt.figure(figsize=(4,4), dpi=100)
         ax = figure.add_subplot(111)
         chart_type = FigureCanvasTkAgg(figure)
-        xlabel = 'Date of Stocks'
+        xlabel = 'Days since opening of time frame'
         ylabel = 'Price($)'
         chart_type.get_tk_widget().grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=20, pady=20)
         df = tf.x
-        df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel, title=f"{self.getCurrentStock().upper()}'s stock history in {self.getCurrentTimeSeries()}")
+        df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel, title=f"{self.graphTitle()}'s stock history in {self.getCurrentTimeSeries()}")
         plt.gcf().canvas.draw()
 
 

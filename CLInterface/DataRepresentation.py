@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import yfinance as yf
 from yahoofinancials import YahooFinancials as yF
+from CLInterface import GetStockName as GSC
 
 
 #import numpy as np
@@ -12,20 +13,15 @@ class graphStockData:
     def __init__(self):
         self.time_series = ['1m, 2m , 5m, 15m, 30m, 60m, 90m, 1h, 1d, 5d, 1wk, 1mo, 3mo and max']
         self.time = 0
-        graphStockData.stockList(self)
-
-    def stockList(self):
-        self.stocksListShort = ['AMZN','AAPL','MSFT','GOOGL','FB','TSLA','NVDA']
-        self.stocksListLong = ['Amazon','Apple','Microsoft','Google','Facebook','Tesla','Nvidia']
+        self.stocks = ['AMZN, AAPL, MSFT, GOOGL, FB, TSLA, NVDA']
         graphStockData.setOutStock(self)
 
     def setOutStock(self):
-        self.stocks = ['AMZN, AAPL, MSFT, GOOGL, FB, TSLA, NVDA']
         print(f'Stocks include {self.stocks}')
         graphStockData.chooseStock(self)
 
     def chooseStock(self):
-        self.stockInfo = input('Enter Stock You Would Like to View')
+        self.stockInfo = input('Enter Stock You Would Like to View').upper()
         graphStockData.changeTimeSeries(self)
 
 
@@ -41,22 +37,31 @@ class graphStockData:
         for i in range(len(self.colourInitial)):
             print(f'Input {self.colourInitial[i]} for {self.colour[i]}')
         self.colourChoice = input('What colour would you like?')
-        if self.stockInfo in self.stocksListShort:
-            graphStockData.getStockName(self)
-        else:
-            self.stockNameLong = self.stockInfo
-            graphStockData.graph(self)
-
-    def getStockName(self):
-        global number
-        for i in range(len(self.stocksListShort)):
-            if self.stockInfo == self.stocksListShort[i]:
-                self.stockNameShort = self.stocksListShort[i]
-                number = i
-                break
-
-        self.stockNameLong = self.stocksListLong[number]
         graphStockData.graph(self)
+
+    def split(self, word):
+        return [char for char in word]
+
+    def getName(self):
+        stock = self.stockInfo
+        temp = self.split(stock)
+        if temp[0] == 'A':
+            if temp[1] == 'M':
+                return 'Amazon'
+            elif temp[1] == 'A':
+                return 'Apple'
+        elif temp[0] == 'M':
+            return 'Microsoft'
+        elif temp[0] == 'G':
+            return 'Google'
+        elif temp[0] == 'F':
+            return 'Facebook'
+        elif temp[0] == 'T':
+            return 'Telsa'
+        elif temp[0] == 'N':
+            return 'Nvidia'
+        else:
+            return stock
 
 
 
@@ -75,7 +80,7 @@ class graphStockData:
         plt.plot(x, y, self.colourChoice)
         plt.ylabel('Price($)')
         plt.xlabel('Date', rotation=0)
-        plt.title(f'Graph of {self.stockNameLong}')
+        plt.title(f'Graph of {self.getName()}"s stock')
         plt.show()
         graphStockData.stats(self)
 
@@ -110,7 +115,8 @@ class graphStockData:
         print(f'Price Earnings ratio is {self.quoteTable}')
 
         self.marketCap = yF.get_market_cap(self.yahooFinance)
-        print(f'Market cap is {self.marketCap}')
+        self.mc = self.marketCap/1000000000000
+        print(f'Market cap is {self.mc}')
 
 
 
