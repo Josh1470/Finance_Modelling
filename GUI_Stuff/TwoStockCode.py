@@ -20,44 +20,40 @@ class twoStock(tk.Frame):
         self.x = tf2.getDataFrame(self.getCurrentStockA(), self.getCurrentTimeSeries())
         self.y = tf2.getDataFrame(self.getCurrentStockB(), self.getCurrentTimeSeries())
 
-
         stocks = "AMZN AAPL MSFT GOOGL FB TSLA NVDA"
         timeSeries = '1m 2m 5m 15m 30m 60m 90m 1h 1d 5d 1wk 1mo 3mo max'
-
 
         self.stockA = tk.StringVar()
         self.stockAChoice = ttk.Combobox(root, textvariable=self.stockA)
         self.stockAChoice['values'] = stocks
         self.stockAChoice['state'] = 'readonly'
         self.stockAChoice.current(0)
-        self.stockAChoice.grid(row=1, column=0, sticky='news', padx=5, pady=5)
+        self.stockAChoice.grid(row=1, column=0, rowspan=4, sticky='news', padx=5, pady=5)
         self.stockA.trace_add('write', self.getCurrentStockA())
-
 
         self.stockB = tk.StringVar()
         self.stockBChoice = ttk.Combobox(root, textvariable=self.stockB)
         self.stockBChoice['values'] = stocks
         self.stockBChoice['state'] = 'readonly'
         self.stockBChoice.current(1)
-        self.stockBChoice.grid(row=3, column=0, rowspan=1, sticky='news', padx=5, pady=5)
+        self.stockBChoice.grid(row=1, column=1, rowspan=4, sticky='news', padx=5, pady=5)
         self.stockB.trace_add('write', self.getCurrentStockB())
-
 
         self.timeBox = tk.StringVar()
         self.timeBoxChoice = ttk.Combobox(root, textvariable=self.timeBox)
         self.timeBoxChoice['values'] = timeSeries
         self.timeBoxChoice['state'] = 'readonly'
         self.timeBoxChoice.current(0)
-        self.timeBoxChoice.grid(row=1, column=1, rowspan=4, sticky='news', padx=5, pady=5)
+        self.timeBoxChoice.grid(row=1, column=2, rowspan=4, sticky='news', padx=5, pady=5)
         self.timeBox.trace_add('write', self.getCurrentTimeSeries())
 
+        self.title = tk.Label(text='Graph two stocks simultaneously', bg='blue', fg='white')
 
-        self.title = tk.Label(text='Graph two stocks simultaneously', bg='blue')
-
-        self.homepage = tk.Button(text='Click here to return to the homepage', command=master.destroy, bg='red')
+        self.homepage = tk.Button(text='Click here to return to the homepage', command=master.destroy, bg='red',
+                                  fg='white')
         self.stock = tk.Label(text='Indicators', bg='lightblue')
-        self.oneStock = tk.Label(text=f'Stock A is {self.getCurrentStockA()}', bg='green')
-        self.otherStock = tk.Label(text=f'Stock B is {self.getCurrentStockB()}', bg='green')
+        self.oneStock = tk.Label(text=f'Stock A is {self.getStockName(self.getCurrentStockA())}', bg='green')
+        self.otherStock = tk.Label(text=f'Stock B is {self.getStockName(self.getCurrentStockB())}', bg='green')
         self.indGuide = tk.Label(text='Which Indicators wins?', bg='green')
         self.graph = tk.Label(text=self.graphStocks())
 
@@ -75,39 +71,40 @@ class twoStock(tk.Frame):
         self.MarketCap2 = tk.Label(text=tf2.marketCap(self.getCurrentStockB()))
         self.PC2 = tk.Label(text=tf2.perChange(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
 
-
-
         self.Ind1 = tk.Label(text='Mean', bg='lightblue')
         self.Ind2 = tk.Label(text='Min', bg='lightblue')
         self.Ind3 = tk.Label(text='Max', bg='lightblue')
         self.Ind4 = tk.Label(text='Median', bg='lightblue')
-        self.Ind5 =  tk.Label(text='Market Cap (T)', bg='lightblue')
+        self.Ind5 = tk.Label(text='Market Cap (T)', bg='lightblue')
         self.Ind6 = tk.Label(text='Percentage Change (%)', bg='lightblue')
 
-        self.HoL1 = tk.Label(text=(self.highLow(tf2.getMean(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x)
-                                                ,tf2.getMean(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y),  self.mean)), bg='orange')
+        self.HoL1 = tk.Label(
+            text=(self.highLow(tf2.getMean(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x)
+                               , tf2.getMean(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y), self.mean)),
+            bg='orange')
 
         self.HoL2 = tk.Label(text=(self.highLow(tf2.getMin(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x)
-                                                ,tf2.getMin(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y),  self.min)), bg='orange')
+                                                , tf2.getMin(self.getCurrentStockB(), self.getCurrentTimeSeries(),
+                                                             self.y), self.min)), bg='orange')
 
         self.HoL3 = tk.Label(text=(self.highLow(tf2.getMax(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x)
-                               , tf2.getMax(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y), self.max)), bg='orange')
+                                                , tf2.getMax(self.getCurrentStockB(), self.getCurrentTimeSeries(),
+                                                             self.y), self.max)), bg='orange')
 
-        self.HoL4 = tk.Label(text=(self.highLow(tf2.getMedian(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x)
-                               , tf2.getMedian(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y), self.median)), bg='orange')
+        self.HoL4 = tk.Label(
+            text=(self.highLow(tf2.getMedian(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x)
+                               , tf2.getMedian(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y),
+                               self.median)), bg='orange')
 
         self.HoL5 = tk.Label(text=(self.highLow(tf2.marketCap(self.getCurrentStockA())
-                               , tf2.marketCap(self.getCurrentStockB()), self.marketCap)), bg='orange')
+                                                , tf2.marketCap(self.getCurrentStockB()), self.marketCap)), bg='orange')
 
-        self.HoL6 = tk.Label(text=(self.highLow(tf2.perChange(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x)
-                               , tf2.perChange(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y), self.percentageChange)), bg='orange')
+        self.HoL6 = tk.Label(
+            text=(self.highLow(tf2.perChange(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x)
+                               , tf2.perChange(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y),
+                               self.percentageChange)), bg='orange')
 
-
-
- 
-        self.title.grid(row=0, column=0, columnspan=3, sticky='news')
-
-
+        self.title.grid(row=0, column=0, columnspan=95, sticky='news')
 
         self.homepage.grid(row=12, column=0, columnspan=4, sticky='news')
         self.stock.grid(row=5, column=0, sticky='news')
@@ -143,15 +140,11 @@ class twoStock(tk.Frame):
         self.HoL5.grid(row=10, column=3, sticky='news', pady=10)
         self.HoL6.grid(row=11, column=3, sticky='news', pady=10)
 
-
-
-
-
     def getCurrentStockA(*args):
-        return 'AAPL'
+        return 'AMZN'
 
     def getCurrentStockB(*args):
-        return 'AMZN'
+        return 'AAPL'
 
     def getCurrentTimeSeries(self, *args):
         return 'max'
@@ -167,8 +160,8 @@ class twoStock(tk.Frame):
         for stock in self.stockList:
             self.df = tf2.getDataFrame(stock, self.getCurrentTimeSeries())
             self.df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel,
-                    title='dales')
-
+                         title=f'Graph of {self.getStockName(self.getCurrentStockA())} and {self.getStockName(self.getCurrentStockB())}')
+        plt.legend([self.getStockName(self.getCurrentStockA()), self.getStockName(self.getCurrentStockB())])
 
         plt.gcf().canvas.draw()
 
@@ -181,6 +174,26 @@ class twoStock(tk.Frame):
         elif self.stock1val < self.stock2val:
             return f'{self.getCurrentStockB()} has a higher {self.indicator} than {self.getCurrentStockA()}'
 
+    def split(self, word):
+        return [char for char in word]
+
+    def getStockName(self, word):
+        temp = self.split(word)
+        if temp[0] == 'A':
+            if temp[1] == 'M':
+                return 'Amazon (AMZN)'
+            elif temp[1] == 'A':
+                return 'Apple (AAPL)'
+        elif temp[0] == 'M':
+            return 'Microsoft (MSFT)'
+        elif temp[0] == 'G':
+            return 'Google (GOOGL)'
+        elif temp[0] == 'F':
+            return 'Facebook (FB)'
+        elif temp[0] == 'T':
+            return 'Telsa (TSLA)'
+        elif temp[0] == 'N':
+            return 'Nvidia (NVDA)'
 
 
 if __name__ == "__main__":
