@@ -3,7 +3,9 @@ from tkinter import ttk
 from tkinter.messagebox import showinfo
 from Tests import TestFunctions2 as tf2
 import matplotlib.pyplot as plt
+import pandas as pd
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import numpy as np
 
 
 class twoStock(tk.Frame):
@@ -147,10 +149,10 @@ class twoStock(tk.Frame):
         return 'AAPL'
 
     def getCurrentTimeSeries(self, *args):
-        return 'max'
+        return '3mo'
 
     def graphStocks(self):
-        figure = plt.figure(figsize=(4, 4), dpi=100)
+        figure = plt.figure(figsize=(6, 6), dpi=100)
         ax = figure.add_subplot(111)
         chart_type = FigureCanvasTkAgg(figure)
         xlabel = 'Days since opening of time frame'
@@ -159,9 +161,15 @@ class twoStock(tk.Frame):
         self.stockList = [self.getCurrentStockA(), self.getCurrentStockB()]
         for stock in self.stockList:
             self.df = tf2.getDataFrame(stock, self.getCurrentTimeSeries())
-            self.df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel,
-                         title=f'Graph of {self.getStockName(self.getCurrentStockA())} and {self.getStockName(self.getCurrentStockB())}')
-        plt.legend([self.getStockName(self.getCurrentStockA()), self.getStockName(self.getCurrentStockB())])
+            self.df['log_ret'] = np.log(self.df['Open']) - np.log(self.df['Open'].shift(1))
+            self.df['cum_sum'] = self.df['log_ret'].cumsum()
+            self.df['ma'] = self.df['cum_sum'].rolling(window=5).mean()
+
+            self.df['cum_sum'].plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel,
+                          title=f'Graph of {self.getStockName(self.getCurrentStockA())} and {self.getStockName(self.getCurrentStockB())}')
+            self.df['ma'].plot()
+        plt.legend([self.getStockName(self.getCurrentStockA()), self.getStockName(self.getCurrentStockB()), f'Moving Average of{self.getStockName(self.getCurrentStockA())}'])
+
 
         plt.gcf().canvas.draw()
 

@@ -15,7 +15,8 @@ def getDataFrame(stock, timeseries):
     tickerHistory = ticker.history(period=timeseries)
     sf = tickerHistory['Open']
     df = pd.DataFrame({'Date': sf.index, 'Open': sf.values})
-    return df['Open']
+    # return df['Open']
+    return df
 
 
 def getStockDataFrame(stock, timeseries):
@@ -46,7 +47,7 @@ def getStockDataFrame(stock, timeseries):
 # stock = [x, y]
 
 def getMean(stock, timeseries, df):
-    column = df
+    column = df['Open']
     meanUnr = column.mean()
     meanRou = round(meanUnr, 2)
     return meanRou
@@ -55,7 +56,7 @@ def getMean(stock, timeseries, df):
 
 
 def getMin(stock, timeseries, df):
-    column = df
+    column = df['Open']
     minUnr = column.min()
     minRou = round(minUnr, 2)
     return minRou
@@ -64,7 +65,7 @@ def getMin(stock, timeseries, df):
 
 
 def getMax(stock, timeseries, df):
-    column = df
+    column = df['Open']
     maxUnr = column.max()
     maxRou = round(maxUnr, 2)
     return maxRou
@@ -72,14 +73,14 @@ def getMax(stock, timeseries, df):
 
 
 def getMedian(stock, timeseries, df):
-    column = df
+    column = df['Open']
     medUnr = column.median()
     medRou = round(medUnr, 2)
     return medRou
 
 
 def getRange(stock, timeseries, df):
-    column = df
+    column = df['Open']
     Max = column.max()
     Min = column.min()
     ranUnr = Max - Min
@@ -88,7 +89,7 @@ def getRange(stock, timeseries, df):
 
 
 def perChange(stock, timeseries, df):
-    column = df
+    column = df['Open']
     First = column.iloc[0]
     Last = column.iloc[-1]
     changeUnr = (Last / First) * 100
