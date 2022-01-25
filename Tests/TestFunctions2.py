@@ -15,7 +15,6 @@ def getDataFrame(stock, timeseries):
     tickerHistory = ticker.history(period=timeseries)
     sf = tickerHistory['Open']
     df = pd.DataFrame({'Date': sf.index, 'Open': sf.values})
-    # return df['Open']
     return df
 
 

@@ -26,7 +26,7 @@ class twoStock(tk.Frame):
         timeSeries = '1m 2m 5m 15m 30m 60m 90m 1h 1d 5d 1wk 1mo 3mo max'
 
         self.stockA = tk.StringVar()
-        self.stockAChoice = ttk.Combobox(root, textvariable=self.stockA)
+        self.stockAChoice = ttk.Combobox(textvariable=self.stockA)
         self.stockAChoice['values'] = stocks
         self.stockAChoice['state'] = 'readonly'
         self.stockAChoice.current(0)
@@ -34,7 +34,7 @@ class twoStock(tk.Frame):
         self.stockA.trace_add('write', self.getCurrentStockA())
 
         self.stockB = tk.StringVar()
-        self.stockBChoice = ttk.Combobox(root, textvariable=self.stockB)
+        self.stockBChoice = ttk.Combobox(textvariable=self.stockB)
         self.stockBChoice['values'] = stocks
         self.stockBChoice['state'] = 'readonly'
         self.stockBChoice.current(1)
@@ -42,7 +42,7 @@ class twoStock(tk.Frame):
         self.stockB.trace_add('write', self.getCurrentStockB())
 
         self.timeBox = tk.StringVar()
-        self.timeBoxChoice = ttk.Combobox(root, textvariable=self.timeBox)
+        self.timeBoxChoice = ttk.Combobox(textvariable=self.timeBox)
         self.timeBoxChoice['values'] = timeSeries
         self.timeBoxChoice['state'] = 'readonly'
         self.timeBoxChoice.current(0)
@@ -164,11 +164,13 @@ class twoStock(tk.Frame):
             self.df['log_ret'] = np.log(self.df['Open']) - np.log(self.df['Open'].shift(1))
             self.df['cum_sum'] = self.df['log_ret'].cumsum()
             self.df['ma'] = self.df['cum_sum'].rolling(window=5).mean()
-
-            self.df['cum_sum'].plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel,
-                          title=f'Graph of {self.getStockName(self.getCurrentStockA())} and {self.getStockName(self.getCurrentStockB())}')
+            self.df['cum_sum'].plot(kind='line', legend=True, ax=ax,  xlabel=xlabel, ylabel=ylabel,
+                                    title=f'Graph of {self.getStockName(self.getCurrentStockA())} and {self.getStockName(self.getCurrentStockB())}')
             self.df['ma'].plot()
-        plt.legend([self.getStockName(self.getCurrentStockA()), self.getStockName(self.getCurrentStockB()), f'Moving Average of{self.getStockName(self.getCurrentStockA())}'])
+
+        plt.legend([self.getStockName(self.getCurrentStockA()), f'Moving Average of {self.getStockName(self.getCurrentStockA())}',
+        self.getStockName(self.getCurrentStockB()),f'Moving Average of {self.getStockName(self.getCurrentStockB())}'])
+        #plt.legend([self.getStockName(self.getCurrentStockA()), self.getStockName(self.getCurrentStockB())])
 
 
         plt.gcf().canvas.draw()
@@ -202,6 +204,7 @@ class twoStock(tk.Frame):
             return 'Telsa (TSLA)'
         elif temp[0] == 'N':
             return 'Nvidia (NVDA)'
+
 
 
 if __name__ == "__main__":

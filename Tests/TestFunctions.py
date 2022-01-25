@@ -24,48 +24,48 @@ def getStockDataFrame(stock, timeseries):
     return df
 
 
-def getStock(*args):
-    stock = OSC.oneStock.getCurrentStock()
-    return stock
+# def getStock(*args):
+#     stock = OSC.oneStock.getCurrentStock()
+#     return stock
+#
+# def getTimeSeries(*args):
+#     timeseries = OSC.oneStock.getCurrentTimeSeries()
+#     return timeseries
+#
+# x = getDataFrame(getStock(), getTimeSeries())
 
-def getTimeSeries(*args):
-    timeseries = OSC.oneStock.getCurrentTimeSeries()
-    return timeseries
-
-x = getDataFrame(getStock(), getTimeSeries())
 
 
-
-def getMean(stock, timeseries):
-    column = x
+def getMean(stock, timeseries, df):
+    column = df
     meanUnr = column.mean()
     meanRou = round(meanUnr, 2)
     return meanRou
 
 
-def getMin(stock, timeseries):
-    column = x
+def getMin(stock, timeseries, df):
+    column = df
     minUnr = column.min()
     minRou = round(minUnr, 2)
     return minRou
 
  
-def getMax(stock, timeseries):
-    column = x
+def getMax(stock, timeseries, df):
+    column = df
     maxUnr = column.max()
     maxRou = round(maxUnr, 2)
     return maxRou
 
 
-def getMedian(stock, timeseries):
-    column = x
+def getMedian(stock, timeseries, df):
+    column = df
     medUnr = column.median()
     medRou = round(medUnr, 2)
     return medRou
 
 
-def getRange(stock, timeseries):
-    column = x
+def getRange(stock, timeseries, df):
+    column = df
     Max = column.max()
     Min = column.min()
     ranUnr = Max - Min
@@ -73,8 +73,8 @@ def getRange(stock, timeseries):
     return ranRou
 
 
-def perChange(stock, timeseries):
-    column = x
+def perChange(stock, timeseries, df):
+    column = df
     First = column.iloc[0]
     Last = column.iloc[-1]
     changeUnr = (Last / First) * 100
