@@ -22,25 +22,26 @@ class App(tk.Tk):
 
         self.frames = {'Main Menu': TitlePage(self),
                        'First Page': oneStock(self),
-                       'Second Page': TwoStock(self)}
+                       'Second Page': TwoStock(self),
+                       'Help Page': helpPage(self)}
 
         self.show_frame('Main Menu')
-        for F in self.frames:
-            page_name = F.__name__
-            frame = F(controller=self)
-            self.frames[page_name] = frame
-            frame.grid(row=0, column=0, sticky='news')
+        # for F in self.frames:
+        #     page_name = F.__name__
+        #     frame = F(controller=self)
+        #     self.frames[page_name] = frame
+        #     frame.grid(row=0, column=0, sticky='news')
 
 
 
-    def show_frame(self, page_name):
+    def show_frame(self, page_name, *args, **kwargs):
         frame = self.frames[page_name]
         frame.grid(row=0, column=0, sticky='news')
         widgets = self.winfo_children()
         for w in widgets:
             if w.winfo_class() == "Frame":
                 w.grid_forget()
-        frame.grid(row=0, column=0)
+        frame.grid(row=0, column=0, rowspan=1000, columnspan=1000)
         #frame.tkraise(self.show_frame(page_name))
 
 
@@ -52,7 +53,16 @@ class TitlePage(tk.Frame):
     def __init__(self, controller):
         tk.Frame.__init__(self)
         print('Testing if this frame can be seen')
-        print(MM.TitlePage(tk.Frame))
+        self.controller = controller
+        self.title = tk.Label(self, text='Stock Grapher', font=('Arial', 14), bg='red')
+
+        self.oneStock = tk.Button(self, text='Click here to graph one stock', bg='Blue',
+                                  command=lambda: controller.show_frame("First Page"))
+        self.twoStocks = tk.Button(self, text='Click here to graph two stocks', bg='Pink',
+                                   command=lambda: controller.show_frame("Second Page"))
+        self.oneStock.grid(row=1, column=0, rowspan=1000, sticky='s')
+        self.title.grid(row=0, column=0, columnspan=1000, sticky='news')
+        self.twoStocks.grid(row=1, column=2, rowspan=1000, sticky='s')
 
 
 
@@ -63,14 +73,43 @@ class TitlePage(tk.Frame):
 class oneStock(tk.Frame):
     def __init__(self, controller):
         tk.Frame.__init__(self)
+        self.controller = controller
+        self.title = tk.Label(self, text='Stock Grapher', font=('Arial', 14), bg='Blue')
 
-        print(OSC.oneStock(tk.Frame))
+        self.oneStock = tk.Button(self, text='Click here to graph one stock', bg='Red',
+                                  command=lambda: controller.show_frame("First Page"))
+        self.twoStocks = tk.Button(self, text='Click here to graph two stocks', bg='Green',
+                                   command=lambda: controller.show_frame("Second Page"))
+        self.oneStock.grid(row=1, column=0, rowspan=1000, sticky='s')
+        self.title.grid(row=0, column=0, columnspan=1000, sticky='news')
+        self.twoStocks.grid(row=1, column=2, rowspan=1000, sticky='s')
+
+
+        #print(OSC.oneStock(tk.Frame))
 
 class TwoStock(tk.Frame):
     def __init__(self, controller):
         tk.Frame.__init__(self)
+        self.controller = controller
+        self.title = tk.Label(self, text='Stock Grapher', font=('Arial', 14), bg='Pink')
 
-        print(TSC.twoStock(tk.Frame))
+        self.oneStock = tk.Button(self, text='Click here to graph one stock', bg='Orange',
+                                  command=lambda: controller.show_frame("First Page"))
+        self.twoStocks = tk.Button(self, text='Click here to graph two stocks', bg='Blue',
+                                   command=lambda: controller.show_frame("Second Page"))
+        self.Help = tk.Button(self, text='Click here for some help', bg='Brown',
+                              command=lambda: controller.show_frame("Help Page"))
+        self.oneStock.grid(row=1, column=0, rowspan=1000, sticky='s')
+        self.title.grid(row=0, column=0, columnspan=1000, sticky='news')
+        self.twoStocks.grid(row=1, column=2, rowspan=1000, sticky='s')
+        self.Help.grid(row=2, column=3, columnspan=1000, sticky='news')
+
+class helpPage(tk.Frame):
+    def __init__(self, controller):
+        tk.Frame.__init__(self)
+
+
+
 
 if __name__ == "__main__":
     app = App()

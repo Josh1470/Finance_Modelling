@@ -10,30 +10,11 @@ from GUI_Stuff import FinanceGUI as FG
 
 
 def getDataFrame(stock, timeseries):
-    ticker = yf.Ticker(stock)
+    ticker = stock
     tickerHistory = ticker.history(period=timeseries)
     sf = tickerHistory['Open']
     df = pd.DataFrame({'Date': sf.index, 'Open': sf.values})
     return df['Open']
-
-def getStockDataFrame(stock, timeseries):
-    ticker = yf.Ticker(stock)
-    tickerHistory = ticker.history(period=timeseries)
-    sf = tickerHistory['Open']
-    df = pd.DataFrame({'Date': sf.index, 'Open': sf.values})
-    return df
-
-
-# def getStock(*args):
-#     stock = OSC.oneStock.getCurrentStock()
-#     return stock
-#
-# def getTimeSeries(*args):
-#     timeseries = OSC.oneStock.getCurrentTimeSeries()
-#     return timeseries
-#
-# x = getDataFrame(getStock(), getTimeSeries())
-
 
 
 def getMean(stock, timeseries, df):

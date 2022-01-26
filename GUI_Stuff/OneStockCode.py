@@ -67,9 +67,9 @@ class oneStock(tk.Frame):
         self.yearlyHigh.grid(row=12, column=0, rowspan=1, sticky='news', pady=5, padx=5)
         self.yearlyLow.grid(row=13, column=0, rowspan=1, sticky='news', pady=5, padx=5)
 
-        self.homePage.grid(row=14,column=0, columnspan=9, sticky='news')
-        self.help.grid(row=15, column=0, columnspan=9, sticky='news')
-        self.twoStock.grid(row=14, column=10, rowspan=2, columnspan=2, sticky='news')
+        #self.homePage.grid(row=14,column=0, columnspan=9, sticky='news')
+        #self.help.grid(row=15, column=0, columnspan=9, sticky='news')
+        #self.twoStock.grid(row=14, column=10, rowspan=2, columnspan=2, sticky='news')
 
 
 
@@ -119,7 +119,7 @@ class oneStock(tk.Frame):
 
 
     def graphCurrentStock(self, stock):
-        self.df = tf.getStockDataFrame(self.getCurrentStock(), self.getCurrentTimeSeries())
+        self.df = tf.getDataFrame(self.getCurrentStock(), self.getCurrentTimeSeries())
         figure = plt.figure(figsize=(4,4), dpi=100)
         ax = figure.add_subplot(111)
         chart_type = FigureCanvasTkAgg(figure)
