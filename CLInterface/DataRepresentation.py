@@ -39,28 +39,24 @@ class graphStockData:
         self.colourChoice = input('What colour would you like?')
         graphStockData.graph(self)
 
-    def split(self, word):
-        return [char for char in word]
-
     def getName(self):
         temp = self.stockInfo
-        if temp[0] == 'A':
-            if temp[1] == 'M':
-                return 'Amazon'
-            elif temp[1] == 'A':
-                return 'Apple'
-        elif temp[0] == 'M':
+        if temp == 'AAPL':
+            return 'Apple'
+        elif temp == 'AMZN':
+            return 'Amazon'
+        elif temp == 'MSFT':
             return 'Microsoft'
-        elif temp[0] == 'G':
+        elif temp == 'GOOGL':
             return 'Google'
-        elif temp[0] == 'F':
+        elif temp == 'FB':
             return 'Facebook'
-        elif temp[0] == 'T':
+        elif temp == 'TSLA':
             return 'Telsa'
-        elif temp[0] == 'N':
+        elif temp == 'NVDA':
             return 'Nvidia'
         else:
-            return temp
+            return temp.upper()
 
 
 

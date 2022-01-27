@@ -111,6 +111,7 @@ class helpPage(tk.Frame):
 
 
 
+
 if __name__ == "__main__":
     app = App()
     app.geometry("750x750")
