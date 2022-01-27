@@ -19,7 +19,7 @@ class oneStock(tk.Frame):
         self.boxChoice = ttk.Combobox(textvariable=self.box)
         self.boxChoice['values'] = stocks
         self.boxChoice['state'] = 'readonly'
-        self.boxChoice.current(1)
+        self.boxChoice.current(5)
         self.boxChoice.grid(row=1, column=0, sticky='news', padx=10, pady=10)
         self.box.trace_add('write', self.getCurrentStock())
 
@@ -85,7 +85,7 @@ class oneStock(tk.Frame):
         #     return self.box.get()
         # else:
         #     return 'AMZN'
-        return 'AAPL'
+        return 'TSLA'
 
     def getCurrentTimeSeries(*args):
         return 'max'

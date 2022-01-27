@@ -43,8 +43,7 @@ class graphStockData:
         return [char for char in word]
 
     def getName(self):
-        stock = self.stockInfo
-        temp = self.split(stock)
+        temp = self.stockInfo
         if temp[0] == 'A':
             if temp[1] == 'M':
                 return 'Amazon'
@@ -61,7 +60,7 @@ class graphStockData:
         elif temp[0] == 'N':
             return 'Nvidia'
         else:
-            return stock
+            return temp
 
 
 
@@ -80,7 +79,7 @@ class graphStockData:
         plt.plot(x, y, self.colourChoice)
         plt.ylabel('Price($)')
         plt.xlabel('Date', rotation=0)
-        plt.title(f'Graph of {self.getName()}"s stock')
+        plt.title(f"Graph of {self.getName()}'s stock")
         plt.show()
         graphStockData.stats(self)
 

@@ -10,7 +10,7 @@ from GUI_Stuff import FinanceGUI as FG
 
 
 def getDataFrame(stock, timeseries):
-    ticker = stock
+    ticker = yf.Ticker(stock)
     tickerHistory = ticker.history(period=timeseries)
     sf = tickerHistory['Open']
     df = pd.DataFrame({'Date': sf.index, 'Open': sf.values})
