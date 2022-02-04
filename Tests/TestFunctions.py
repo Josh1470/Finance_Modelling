@@ -16,6 +16,13 @@ def getDataFrame(stock, timeseries):
     df = pd.DataFrame({'Date': sf.index, 'Open': sf.values})
     return df['Open']
 
+def getStockDataFrame(stock, timeseries):
+    ticker = yf.Ticker(stock)
+    tickerHistory = ticker.history(period=timeseries)
+    sf = tickerHistory['Open']
+    df = pd.DataFrame({'Date': sf.index, 'Open': sf.values})
+    return df
+
 
 def getMean(stock, timeseries, df):
     column = df

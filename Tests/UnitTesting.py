@@ -1,5 +1,6 @@
 import unittest
 from Tests import TestFunctions as tF
+import yfinance as yf
 
 
 class graphTesting(unittest.TestCase):

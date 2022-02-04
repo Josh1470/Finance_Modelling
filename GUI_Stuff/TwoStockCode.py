@@ -149,7 +149,7 @@ class twoStock(tk.Frame):
         return 'AAPL'
 
     def getCurrentTimeSeries(self, *args):
-        return '3mo'
+        return '1mo'
 
     def graphStocks(self):
         figure = plt.figure(figsize=(6, 6), dpi=100)
@@ -163,10 +163,11 @@ class twoStock(tk.Frame):
             self.df = tf2.getDataFrame(stock, self.getCurrentTimeSeries())
             self.df['log_ret'] = np.log(self.df['Open']) - np.log(self.df['Open'].shift(1))
             self.df['cum_sum'] = self.df['log_ret'].cumsum()
-            self.df['ma'] = self.df['cum_sum'].rolling(window=5).mean()
-            self.df['cum_sum'].plot(kind='line', legend=True, ax=ax,  xlabel=xlabel, ylabel=ylabel,
+            self.df['ma'] = self.df['cum_sum'].rolling(window=2).mean()
+            self.df2 = self.df.set_index('Date')
+            self.df2['cum_sum'].plot(kind='line', legend=True, ax=ax,  xlabel=xlabel, ylabel=ylabel,
                                     title=f'Graph of {self.getStockName(self.getCurrentStockA())} and {self.getStockName(self.getCurrentStockB())}')
-            self.df['ma'].plot()
+            self.df2['ma'].plot()
 
         plt.legend([self.getStockName(self.getCurrentStockA()), f'Moving Average of {self.getStockName(self.getCurrentStockA())}',
         self.getStockName(self.getCurrentStockB()),f'Moving Average of {self.getStockName(self.getCurrentStockB())}'])
