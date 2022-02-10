@@ -10,9 +10,9 @@ class Help(tk.Frame):
         self.FAQ1 = tk.Label(bg='lightblue', text='Would I be able to invest directly through this interface?')
         self.FAQ2 = tk.Label(bg='lightblue', text='How regularly does stock information update?')
         self.FAQ3 = tk.Label(bg='lightblue', text='Is the GUI at all customisable?')
-        self.FAQ4 = tk.Label(bg='Red', text='Would the system be accessible through the internet or is it a '
+        self.FAQ4 = tk.Label(bg='lightblue', text='Would the system be accessible through the internet or is it a '
                                           'downloadable software')
-        self.FAQ5 = tk.Label(bg='Red', text='Is there a way to filter stocks shown on the graph')
+        self.FAQ5 = tk.Label(bg='lightblue', text='Is there a way to filter stocks shown on the graph')
 
         self.answer1 = tk.Label(text='No, currently you are unable to invest directly through this '
                                                 'interface,however with more time this is '
@@ -23,6 +23,12 @@ class Help(tk.Frame):
                                      'the time series shown on both the OneStock and TwoStock Frames. \n'
                                      'The user can also compare two stocks of their choice in the TwoStock Frame, and the user can '
                                      'choose if they want the moving averages on this graph as well')
+        self.answer4 = tk.Label(text='The system is not accessbile through the internet but it is a downloadable software.\n'
+                                     'The software can be accessed for free through GitHub and this means the code can'
+                                     'can be changed in any way the user wants')
+        self.answer5 = tk.Label(text='There is a way to filter the stocks shown on the graph as the user can choose the stock,'
+                                     ' they would like to display through the combo boxes. However, the user will need to \n refresh the frame each time a new stock is chosen. '
+                                     'This is so the code can output the indicators for the chosen stock ')
 
         self.title.grid(row=0, column=0, columnspan=100, sticky='news')
 
@@ -35,6 +41,11 @@ class Help(tk.Frame):
         self.FAQ3.grid(row=5, column=1, padx=5, pady=5)
         self.answer3.grid(row=6, column=1)
 
+        self.FAQ4.grid(row=7, column=1, padx=5, pady=5)
+        self.answer4.grid(row=8, column=1)
+
+        self.FAQ5.grid(row=9, column=1, padx=5, pady=5)
+        self.answer5.grid(row=10, column=1)
 
 
 
@@ -42,7 +53,7 @@ class Help(tk.Frame):
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Stock Grapher")
-    root.geometry("1000x1000")
+    root.geometry('750x750')
     Help = Help(root)
     # oneStock.pack()
     root.mainloop()
