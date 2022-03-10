@@ -23,3 +23,6 @@ if __name__ == "__main__":
     TitlePage = TitlePage(root)
     # oneStock.pack()
     root.mainloop()
+
+
+

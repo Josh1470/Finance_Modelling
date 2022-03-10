@@ -1,11 +1,14 @@
 import unittest
 from Tests import TestFunctions as tF
 import yfinance as yf
+import datetime as dt
+import pandas as pd
 
 
 class graphTesting(unittest.TestCase):
+    df = pd.DataFrame()
     def testMean(self):
-        self.assertEqual(tF.getMean("AAPL"), 12.17)
+        self.assertEqual(tF.getMean("AAPL", 'max'), 12.17)
 
     def testMax(self):
         self.assertEqual(tF.getMax("AAPL"), 156.98)

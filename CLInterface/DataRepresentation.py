@@ -29,6 +29,8 @@ class graphStockData:
         print(f'''Availiable time series include : 
               {self.time_series}''')
         self.time = input('What time series would you like to view?')
+        #if self.time not in self.time_series:
+            #raise AttributeError
         graphStockData.graphDesign(self)
 
     def graphDesign(self):
