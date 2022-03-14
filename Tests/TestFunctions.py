@@ -66,7 +66,7 @@ def perChange(stock, timeseries, df):
     First = column.iloc[0]
     Last = column.iloc[-1]
     changeUnr = (Last / First) * 100
-    changeRou = changeUnr.round(2)
+    changeRou = changeUnr.round()
     return changeRou
 
 def peRatio(stock):

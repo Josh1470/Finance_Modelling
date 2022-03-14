@@ -6,27 +6,26 @@ import pandas as pd
 
 
 class graphTesting(unittest.TestCase):
-    df = pd.DataFrame()
     def testMean(self):
-        self.assertEqual(tF.getMean("AAPL", 'max'), 12.17)
+        self.assertEqual(tF.getMean("AAPL", 'max', df=tF.getDataFrame('AAPL','max')), 13.22)
 
     def testMax(self):
-        self.assertEqual(tF.getMax("AAPL"), 156.98)
+        self.assertEqual(tF.getMax("AAPL", 'max', df=tF.getDataFrame('AAPL', 'max')), 182.4)
 
     def testMin(self):
-        self.assertEqual(tF.getMin("AAPL"), 0.04)
+        self.assertEqual(tF.getMin("AAPL", 'max', df=tF.getDataFrame('AAPL','max')), 0.04)
 
     def testMedian(self):
-        self.assertEqual(tF.getMedian("AAPL"), 0.38)
+        self.assertEqual(tF.getMedian("AAPL",'max', df=tF.getDataFrame('AAPL', 'max')), 0.39)
 
     def testPerChange(self):
-        self.assertEqual(tF.perChange("AAPL"), 141421.4)
+        self.assertEqual(tF.perChange("AAPL", 'max', df=tF.getDataFrame('AAPL', 'max')), 158414)
 
     def testPeRatio(self):
-        self.assertEqual(tF.peRatio("AAPL"), 27.96)
+        self.assertEqual(tF.peRatio("AAPL"), 25.72)
 
     def testMarketCap(self):
-        self.assertEqual(tF.marketCap("AAPL"), 2.36)
+        self.assertEqual(tF.marketCap("AAPL"), 2.53)
 
 
 
