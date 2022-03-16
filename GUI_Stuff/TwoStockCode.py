@@ -45,7 +45,7 @@ class twoStock(tk.Frame):
         self.timeBoxChoice = ttk.Combobox(textvariable=self.timeBox)
         self.timeBoxChoice['values'] = timeSeries
         self.timeBoxChoice['state'] = 'readonly'
-        self.timeBoxChoice.current(0)
+        self.timeBoxChoice.current(13)
         self.timeBoxChoice.grid(row=1, column=2, rowspan=4, sticky='news', padx=5, pady=5)
         self.timeBox.trace_add('write', self.getCurrentTimeSeries())
 
@@ -149,14 +149,14 @@ class twoStock(tk.Frame):
         return 'AAPL'
 
     def getCurrentTimeSeries(self, *args):
-        return '1mo'
+        return 'max'
 
     def graphStocks(self):
         figure = plt.figure(figsize=(6, 6), dpi=100)
         ax = figure.add_subplot(111)
         chart_type = FigureCanvasTkAgg(figure)
         xlabel = 'Days since opening of time frame'
-        ylabel = 'Price($)'
+        ylabel = 'Logarithmic rate of returns'
         chart_type.get_tk_widget().grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=20, pady=20)
         self.stockList = [self.getCurrentStockA(), self.getCurrentStockB()]
         for stock in self.stockList:
@@ -164,6 +164,7 @@ class twoStock(tk.Frame):
             self.df['log_ret'] = np.log(self.df['Open']) - np.log(self.df['Open'].shift(1))
             self.df['cum_sum'] = self.df['log_ret'].cumsum()
             self.df['ma'] = self.df['cum_sum'].rolling(window=2).mean()
+            print(self.df)
             self.df2 = self.df.set_index('Date')
             self.df2['cum_sum'].plot(kind='line', legend=True, ax=ax,  xlabel=xlabel, ylabel=ylabel,
                                     title=f'Graph of {self.getStockName(self.getCurrentStockA())} and {self.getStockName(self.getCurrentStockB())}')

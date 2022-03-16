@@ -13,6 +13,9 @@ class Help(tk.Frame):
                      'Is the GUI at all customisable?',
                      'Would the system be accessible through the internet or is it a downloadable software',
                      'Is there a way to filter stocks shown on the graph',
+                     'What does the Range indicator mean?',
+                     'What is a companies Price/Earnings ratio mean?',
+                     'What does the market cap indicator indicate?'
                      ]
         answers = ['No, currently you are unable to invest directly through this interface,however with more time this is '
                    'something we would love to implement',
@@ -25,9 +28,14 @@ class Help(tk.Frame):
                    'The software can be accessed for free through GitHub and this means the code can be changed in any way the user wants',
                    'There is a way to filter the stocks shown on the graph as the user can choose the stock, they would like to display through the combo boxes. '
                    'However, \n the user will need to refresh the frame each time a new stock is chosen. '
-                   'This is so the code can output the indicators for the chosen stock ']
-        QuestionRow = [1, 3, 5, 7, 9]
-        AnswerRow = [2, 4, 6, 8, 10]
+                   'This is so the code can output the indicators for the chosen stock',
+                   'Numerical difference between the stock price on the first day of the time frame selected and \n'
+                   'the stock price on the final day of the time frame selected',
+                   'It is the stock price divided by the earnings per share of the company. A high P/E ratio tends to suggest a company is overvalued \n'
+                   'Whereas a low P/E ratio suggests a company is undervalued',
+                   'This is the total value of all the company’s shares of stock.']
+        QuestionRow = [1, 3, 5, 7, 9, 11, 13, 15, 17]
+        AnswerRow = [2, 4, 6, 8, 10, 12, 14, 16, 18]
 
         for i in range(len(questions)):
             Question = tk.Label(bg='lightblue', text=questions[i])

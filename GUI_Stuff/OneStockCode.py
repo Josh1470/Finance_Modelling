@@ -39,7 +39,7 @@ class oneStock(tk.Frame):
         # self.homePage = tk.Button(text='Click to return to main menu', bg='orange', command=FG.TitlePage(controller))
         # self.help = tk.Button(text='Click here for some help', bg='grey', command=FG.TitlePage(controller))
         # self.twoStock = tk.Button(text='Click here to go to the two stock page', bg='red', command=FG.TwoStock(controller))
-        # self.graph = tk.Label(text=self.graphCurrentStock(self.getCurrentStock()), bg='green')
+        self.graph = tk.Label(text=self.graphCurrentStock(self.getCurrentStock()), bg='green')
 
         self.mean = tk.Label(bg='#5C7AB9', text=f'The mean of the stock in the time frame is ${tf.getMean(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
         self.max = tk.Label(bg='#5C7AB9', text=f'The max of the stock in the time frame is ${tf.getMax(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
@@ -119,15 +119,19 @@ class oneStock(tk.Frame):
 
 
     def graphCurrentStock(self, stock):
-        self.df = tf.getDataFrame(self.getCurrentStock(), self.getCurrentTimeSeries())
+        stock = self.getCurrentStock()
+        self.df = tf.getDataFrame(stock, self.getCurrentTimeSeries())
         figure = plt.figure(figsize=(4,4), dpi=100)
         ax = figure.add_subplot(111)
         chart_type = FigureCanvasTkAgg(figure)
+        #self.df.reset_index()
+        #self.df2 = self.df.reset_index()
+        #self.df2 = self.df.set_index('Date')
+        print(self.df)
         xlabel = 'Days since opening of time frame'
         ylabel = 'Price($)'
         chart_type.get_tk_widget().grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=20, pady=20)
-        df = self.x
-        df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel, title=f"{self.graphTitle()}'s stock history in {self.getCurrentTimeSeries()}")
+        self.df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel, title=f"{self.graphTitle()}'s stock history in {self.getCurrentTimeSeries()}")
         plt.gcf().canvas.draw()
 
 
