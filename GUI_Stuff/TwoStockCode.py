@@ -12,6 +12,33 @@ class twoStock(tk.Frame):
     def __init__(self, master):
         super().__init__()
 
+        stocks = "AMZN AAPL MSFT GOOGL FB TSLA NVDA"
+        timeSeries = '1m 2m 5m 15m 30m 60m 90m 1h 1d 5d 1wk 1mo 3mo max'
+
+        self.stockA = tk.StringVar()
+        self.stockAChoice = ttk.Combobox(textvariable=self.stockA)
+        self.stockAChoice['values'] = stocks
+        self.stockAChoice['state'] = 'readonly'
+        self.stockAChoice.current(0)
+        self.stockAChoice.grid(row=1, column=0, rowspan=4, sticky='news', padx=5, pady=5)
+        self.stockA.trace_add('write', self.getCurrentStockA)
+
+        self.stockB = tk.StringVar()
+        self.stockBChoice = ttk.Combobox(textvariable=self.stockB)
+        self.stockBChoice['values'] = stocks
+        self.stockBChoice['state'] = 'readonly'
+        self.stockBChoice.current(1)
+        self.stockBChoice.grid(row=1, column=1, rowspan=4, sticky='news', padx=5, pady=5)
+        self.stockBChoice.bind('<<ComboboxSelected>>', self.getCurrentStockB)
+
+        self.timeBox = tk.StringVar()
+        self.timeBoxChoice = ttk.Combobox(textvariable=self.timeBox)
+        self.timeBoxChoice['values'] = timeSeries
+        self.timeBoxChoice['state'] = 'readonly'
+        self.timeBoxChoice.current(13)
+        self.timeBoxChoice.grid(row=1, column=2, rowspan=4, sticky='news', padx=5, pady=5)
+        self.timeBox.trace_add('write', self.getCurrentTimeSeries)
+
         self.mean = 'Mean'
         self.min = 'Minimum'
         self.max = 'Maximum'
@@ -22,32 +49,9 @@ class twoStock(tk.Frame):
         self.x = tf2.getDataFrame(self.getCurrentStockA(), self.getCurrentTimeSeries())
         self.y = tf2.getDataFrame(self.getCurrentStockB(), self.getCurrentTimeSeries())
 
-        stocks = "AMZN AAPL MSFT GOOGL FB TSLA NVDA"
-        timeSeries = '1m 2m 5m 15m 30m 60m 90m 1h 1d 5d 1wk 1mo 3mo max'
 
-        self.stockA = tk.StringVar()
-        self.stockAChoice = ttk.Combobox(textvariable=self.stockA)
-        self.stockAChoice['values'] = stocks
-        self.stockAChoice['state'] = 'readonly'
-        self.stockAChoice.current(0)
-        self.stockAChoice.grid(row=1, column=0, rowspan=4, sticky='news', padx=5, pady=5)
-        self.stockA.trace_add('write', self.getCurrentStockA())
 
-        self.stockB = tk.StringVar()
-        self.stockBChoice = ttk.Combobox(textvariable=self.stockB)
-        self.stockBChoice['values'] = stocks
-        self.stockBChoice['state'] = 'readonly'
-        self.stockBChoice.current(1)
-        self.stockBChoice.grid(row=1, column=1, rowspan=4, sticky='news', padx=5, pady=5)
-        self.stockB.trace_add('write', self.getCurrentStockB())
 
-        self.timeBox = tk.StringVar()
-        self.timeBoxChoice = ttk.Combobox(textvariable=self.timeBox)
-        self.timeBoxChoice['values'] = timeSeries
-        self.timeBoxChoice['state'] = 'readonly'
-        self.timeBoxChoice.current(13)
-        self.timeBoxChoice.grid(row=1, column=2, rowspan=4, sticky='news', padx=5, pady=5)
-        self.timeBox.trace_add('write', self.getCurrentTimeSeries())
 
         self.title = tk.Label(text='Graph two stocks simultaneously', bg='blue', fg='white')
 
@@ -142,11 +146,14 @@ class twoStock(tk.Frame):
         self.HoL5.grid(row=10, column=3, sticky='news', pady=10)
         self.HoL6.grid(row=11, column=3, sticky='news', pady=10)
 
-    def getCurrentStockA(*args):
-        return 'AMZN'
+    def getCurrentStockA(self, *args):
+        newStock = self.stockA.get()
+        graphStocks(self)
+1
 
-    def getCurrentStockB(*args):
-        return 'AAPL'
+    def getCurrentStockB(self, *args):
+        newStock = self.stockB.get()
+        return newStock
 
     def getCurrentTimeSeries(self, *args):
         return 'max'
