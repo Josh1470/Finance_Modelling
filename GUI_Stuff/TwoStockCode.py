@@ -11,7 +11,6 @@ import numpy as np
 class twoStock(tk.Frame):
     def __init__(self, master):
         super().__init__()
-
         stocks = "AMZN AAPL MSFT GOOGL FB TSLA NVDA"
         timeSeries = '1m 2m 5m 15m 30m 60m 90m 1h 1d 5d 1wk 1mo 3mo max'
 
@@ -35,7 +34,7 @@ class twoStock(tk.Frame):
         self.timeBoxChoice = ttk.Combobox(textvariable=self.timeBox)
         self.timeBoxChoice['values'] = timeSeries
         self.timeBoxChoice['state'] = 'readonly'
-        self.timeBoxChoice.current(13)
+        self.timeBoxChoice.current(12)
         self.timeBoxChoice.grid(row=1, column=2, rowspan=4, sticky='news', padx=5, pady=5)
         self.timeBox.trace_add('write', self.getCurrentTimeSeries)
 
@@ -46,8 +45,8 @@ class twoStock(tk.Frame):
         self.marketCap = 'Market Cap (T)'
         self.percentageChange = 'Percentage Change (%)'
 
-        self.x = tf2.getDataFrame(self.getCurrentStockA(), self.getCurrentTimeSeries())
-        self.y = tf2.getDataFrame(self.getCurrentStockB(), self.getCurrentTimeSeries())
+        self.x = tf2.getDataFrame(self.getStockA(), self.getCurrentTimeSeries())
+        self.y = tf2.getDataFrame(self.getStockB(), self.getCurrentTimeSeries())
 
 
 
@@ -58,23 +57,23 @@ class twoStock(tk.Frame):
         self.homepage = tk.Button(text='Click here to return to the homepage', command=master.destroy, bg='red',
                                   fg='white')
         self.stock = tk.Label(text='Indicators', bg='lightblue')
-        self.oneStock = tk.Label(text=f'Stock A is {self.getStockName(self.getCurrentStockA())}', bg='green')
-        self.otherStock = tk.Label(text=f'Stock B is {self.getStockName(self.getCurrentStockB())}', bg='green')
+        self.oneStock = tk.Label(text=f'Stock A is {self.getStockName(self.getStockA())}', bg='green')
+        self.otherStock = tk.Label(text=f'Stock B is {self.getStockName(self.getStockB())}', bg='green')
         self.indGuide = tk.Label(text='Which Indicators wins?', bg='green')
-        self.graph = tk.Label(text=self.graphStocks())
+        self.graph = tk.Label(text=self.graphStocks(self.getStockA(), self.getStockB(), self.getCurrentTimeSeries()))
 
-        self.Mean1 = tk.Label(text=tf2.getMean(self.getCurrentStockA(), self.getCurrentStockB(), self.x))
-        self.Min1 = tk.Label(text=tf2.getMin(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
+        #self.Mean1 = tk.Label(text=tf2.getMean(self.getStockA(), self.getCurrentStockB(), self.x))
+        #self.Min1 = tk.Label(text=tf2.getMin(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
         self.Max1 = tk.Label(text=tf2.getMax(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
         self.Median1 = tk.Label(text=tf2.getMedian(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
-        self.MarketCap1 = tk.Label(text=tf2.marketCap(self.getCurrentStockA()))
+        self.MarketCap1 = tk.Label(text=tf2.marketCap(self.getStockA()))
         self.PC1 = tk.Label(text=tf2.perChange(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
 
         self.Mean2 = tk.Label(text=tf2.getMean(self.getCurrentStockA(), self.getCurrentStockB(), self.y))
         self.Min2 = tk.Label(text=tf2.getMin(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
         self.Max2 = tk.Label(text=tf2.getMax(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
         self.Median2 = tk.Label(text=tf2.getMedian(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
-        self.MarketCap2 = tk.Label(text=tf2.marketCap(self.getCurrentStockB()))
+        self.MarketCap2 = tk.Label(text=tf2.marketCap(self.getStockB()))
         self.PC2 = tk.Label(text=tf2.perChange(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
 
         self.Ind1 = tk.Label(text='Mean', bg='lightblue')
@@ -102,8 +101,8 @@ class twoStock(tk.Frame):
                                , tf2.getMedian(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y),
                                self.median)), bg='orange')
 
-        self.HoL5 = tk.Label(text=(self.highLow(tf2.marketCap(self.getCurrentStockA())
-                                                , tf2.marketCap(self.getCurrentStockB()), self.marketCap)), bg='orange')
+        self.HoL5 = tk.Label(text=(self.highLow(tf2.marketCap(self.getStockA())
+                                                , tf2.marketCap(self.getStockB()), self.marketCap)), bg='orange')
 
         self.HoL6 = tk.Label(
             text=(self.highLow(tf2.perChange(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x)
@@ -118,8 +117,8 @@ class twoStock(tk.Frame):
         self.otherStock.grid(row=5, column=2, sticky='news')
         self.indGuide.grid(row=5, column=3, sticky='news')
 
-        self.Mean1.grid(row=6, column=1, sticky='news')
-        self.Min1.grid(row=7, column=1, sticky='news')
+        #self.Mean1.grid(row=6, column=1, sticky='news')
+        #self.Min1.grid(row=7, column=1, sticky='news')
         self.Max1.grid(row=8, column=1, sticky='news')
         self.Median1.grid(row=9, column=1, sticky='news')
         self.MarketCap1.grid(row=10, column=1, sticky='news')
@@ -146,40 +145,69 @@ class twoStock(tk.Frame):
         self.HoL5.grid(row=10, column=3, sticky='news', pady=10)
         self.HoL6.grid(row=11, column=3, sticky='news', pady=10)
 
+    def getStockA(self):
+        self.changeA = self.stockA.get()
+        self.timeSeries = self.getTimeSeries()
+        self.x = tf2.getDataFrame(self.changeA, self.timeSeries)
+        self.Mean1 = tk.Label(text=tf2.getMean(self.changeA, self.timeSeries, self.x))
+        self.Min1 = tk.Label(text=tf2.getMin(self.changeA, self.timeSeries, self.x))
+        #self.Max1 = tk.Label(text=tf2.getMax(self.changeA, self.timeSeries, self.x))
+        #self.Median1 = tk.Label(text=tf2.getMedian(self.changeA, self.timeSeries, self.x))
+        #self.MarketCap1 = tk.Label(text=tf2.marketCap(self.changeA))
+        #self.PC1 = tk.Label(text=tf2.perChange(self.changeA, self.timeSeries, self.x))
+
+        self.Mean1.grid(row=6, column=1, sticky='news')
+        self.Min1.grid(row=7, column=1, sticky='news')
+        #self.Max1.grid(row=8, column=1, sticky='news')
+        #self.Median1.grid(row=9, column=1, sticky='news')
+        #self.MarketCap1.grid(row=10, column=1, sticky='news')
+        #self.PC1.grid(row=11, column=1, sticky='news')
+
+        self.oneStock = tk.Label(text=f'Stock A is {self.getStockName(self.changeA)}', bg='green')
+        self.oneStock.grid(row=5, column=1, sticky='news')
+        return self.stockA.get()
+
     def getCurrentStockA(self, *args):
-        newStock = self.stockA.get()
-        graphStocks(self)
-1
+        stocks = self.getStockA()
+        return self.graphStocks(stocks, self.getStockB(), self.getCurrentTimeSeries())
+
+    def getStockB(self):
+        return self.stockB.get()
 
     def getCurrentStockB(self, *args):
-        newStock = self.stockB.get()
-        return newStock
+        stocks = self.getStockB()
+        return self.graphStocks(self.getStockA(), stocks, self.getCurrentTimeSeries())
+
+    def getTimeSeries(self):
+        return self.timeBox.get()
 
     def getCurrentTimeSeries(self, *args):
-        return 'max'
+        time = self.getTimeSeries()
+        return self.graphStocks(self.getStockA(), self.getStockB(), time)
 
-    def graphStocks(self):
+    def graphStocks(self, stockA, stockB, time):
         figure = plt.figure(figsize=(6, 6), dpi=100)
         ax = figure.add_subplot(111)
         chart_type = FigureCanvasTkAgg(figure)
         xlabel = 'Days since opening of time frame'
         ylabel = 'Logarithmic rate of returns'
         chart_type.get_tk_widget().grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=20, pady=20)
-        self.stockList = [self.getCurrentStockA(), self.getCurrentStockB()]
+        self.stockList = [stockA, stockB]
         for stock in self.stockList:
-            self.df = tf2.getDataFrame(stock, self.getCurrentTimeSeries())
+            self.df = tf2.getDataFrame(stock, time)
             self.df['log_ret'] = np.log(self.df['Open']) - np.log(self.df['Open'].shift(1))
             self.df['cum_sum'] = self.df['log_ret'].cumsum()
             self.df['ma'] = self.df['cum_sum'].rolling(window=2).mean()
-            print(self.df)
+            #print(self.df)
             self.df2 = self.df.set_index('Date')
             self.df2['cum_sum'].plot(kind='line', legend=True, ax=ax,  xlabel=xlabel, ylabel=ylabel,
-                                    title=f'Graph of {self.getStockName(self.getCurrentStockA())} and {self.getStockName(self.getCurrentStockB())}')
+                                    title=f'Graph of {self.getStockName(self.getStockA())} and {self.getStockName(self.getStockB())}')
             self.df2['ma'].plot()
 
-        plt.legend([self.getStockName(self.getCurrentStockA()), f'Moving Average of {self.getStockName(self.getCurrentStockA())}',
-        self.getStockName(self.getCurrentStockB()),f'Moving Average of {self.getStockName(self.getCurrentStockB())}'])
+        plt.legend([self.getStockName(self.getStockA()), f'Moving Average of {self.getStockName(self.getStockA())}',
+        self.getStockName(self.getStockB()),f'Moving Average of {self.getStockName(self.getStockB())}'])
         #plt.legend([self.getStockName(self.getCurrentStockA()), self.getStockName(self.getCurrentStockB())])
+        #self.changeIndicators()
 
 
         plt.gcf().canvas.draw()
@@ -189,15 +217,15 @@ class twoStock(tk.Frame):
         self.stock2val = stock2val
         self.indicator = indicator
         if self.stock1val > self.stock2val:
-            return f'{self.getCurrentStockA()} has a higher {self.indicator} than {self.getCurrentStockB()}'
+            return f'{self.getStockA()} has a higher {self.indicator} than {self.getStockB()}'
         elif self.stock1val < self.stock2val:
-            return f'{self.getCurrentStockB()} has a higher {self.indicator} than {self.getCurrentStockA()}'
+            return f'{self.getStockB()} has a higher {self.indicator} than {self.getStockA()}'
 
     def split(self, word):
         return [char for char in word]
 
     def getStockName(self, word):
-        temp = self.split(word)
+        temp = word
         if temp[0] == 'A':
             if temp[1] == 'M':
                 return 'Amazon (AMZN)'
