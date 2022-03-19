@@ -12,7 +12,7 @@ import random
 class oneStock(tk.Frame):
     def __init__(self, controller):
         super().__init__()
-        self.x = tf.getDataFrame(self.getCurrentStock(), self.getCurrentTimeSeries())
+
 
         stocks = 'AMZN AAPL MSFT  GOOGL  FB  TSLA NVDA'
         self.box = tk.StringVar()
@@ -21,7 +21,7 @@ class oneStock(tk.Frame):
         self.boxChoice['state'] = 'readonly'
         self.boxChoice.current(5)
         self.boxChoice.grid(row=1, column=0, sticky='news', padx=10, pady=10)
-        self.box.trace_add('write', self.getCurrentStock())
+        self.box.trace_add('write', self.getCurrentStock)
 
 
         timeSeries = '1m 2m 5m 15m 30m 60m 90m 1h 1d 5d 1wk 1mo 3mo max'
@@ -31,15 +31,17 @@ class oneStock(tk.Frame):
         self.timeBox_choice['state'] = 'readonly'
         self.timeBox_choice.current(13)
         self.timeBox_choice.grid(row=2, column=0, sticky='news', padx=10, pady=10)
-        self.timeBox.trace_add('write', self.getCurrentTimeSeries())
+        self.timeBox.trace_add('write', self.getCurrentTimeSeries)
 
 
         self.title = tk.Label(text='Graph One Stock', bg='Brown')
 
+        self.x = tf.getDataFrame(self.getStock(), self.getTimeSeries())
+
         # self.homePage = tk.Button(text='Click to return to main menu', bg='orange', command=FG.TitlePage(controller))
         # self.help = tk.Button(text='Click here for some help', bg='grey', command=FG.TitlePage(controller))
         # self.twoStock = tk.Button(text='Click here to go to the two stock page', bg='red', command=FG.TwoStock(controller))
-        self.graph = tk.Label(text=self.graphCurrentStock(self.getCurrentStock()), bg='green')
+        self.graph = tk.Label(text=self.graphCurrentStock(self.getStock(), self.getTimeSeries()), bg='green')
 
         self.mean = tk.Label(bg='#5C7AB9', text=f'The mean of the stock in the time frame is ${tf.getMean(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
         self.max = tk.Label(bg='#5C7AB9', text=f'The max of the stock in the time frame is ${tf.getMax(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
@@ -48,10 +50,10 @@ class oneStock(tk.Frame):
         self.mode = tk.Label(bg='#5C7AB9', text=f'The range of this stock in the time frame is ${tf.getRange(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
 
         self.PC = tk.Label(bg='#5C7AB9', text=f'The Percentage change of this stock in the time frame is {tf.perChange(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}%')
-        self.peRatio = tk.Label(bg='#5C7AB9', text=f'The price to earnings ratio of this stock in the time frame is {tf.peRatio(self.getCurrentStock())}')
-        self.marketCap = tk.Label(bg='#5C7AB9', text=f'The market cap of this stock in the time frame {tf.marketCap(self.getCurrentStock())}T')
-        self.yearlyHigh = tk.Label(bg='#5C7AB9', text=f'The yearly high of this stock is ${tf.getYearlyHigh(self.getCurrentStock())}')
-        self.yearlyLow = tk.Label(bg='#5C7AB9', text=f'The yearly low of this stock is ${tf.getYearlyLow(self.getCurrentStock())}')
+        self.peRatio = tk.Label(bg='#5C7AB9', text=f'The price to earnings ratio of this stock in the time frame is {tf.peRatio(self.getStock())}')
+        self.marketCap = tk.Label(bg='#5C7AB9', text=f'The market cap of this stock in the time frame {tf.marketCap(self.getStock())}T')
+        self.yearlyHigh = tk.Label(bg='#5C7AB9', text=f'The yearly high of this stock is ${tf.getYearlyHigh(self.getStock())}')
+        self.yearlyLow = tk.Label(bg='#5C7AB9', text=f'The yearly low of this stock is ${tf.getYearlyLow(self.getStock())}')
 
 
         self.title.grid(row=0, column=0, columnspan=12, sticky='news')
@@ -78,21 +80,23 @@ class oneStock(tk.Frame):
         return [char for char in word]
 
 
+    def getStock(self):
+        return self.box.get()
 
-    def getCurrentStock(*args):
-        # if self.box.get() != 'AMZN':
-        #     self.update()
-        #     return self.box.get()
-        # else:
-        #     return 'AMZN'
-        return 'TSLA'
+    def getCurrentStock(self, *args):
+        stocks = self.getStock()
+        return self.graphCurrentStock(stocks, self.getTimeSeries())
 
-    def getCurrentTimeSeries(*args):
-        return 'max'
+    def getTimeSeries(self):
+        return self.timeBox.get()
 
-    def graphTitle(self):
-        stock = self.getCurrentStock()
-        temp = self.split(stock)
+
+    def getCurrentTimeSeries(self, *args):
+        time = self.getTimeSeries()
+        return self.graphCurrentStock(self.getStock(), time)
+
+    def graphTitle(self, word):
+        temp = word
         if temp[0] == 'A':
             if temp[1] == 'M':
                 return 'Amazon'
@@ -118,20 +122,19 @@ class oneStock(tk.Frame):
         self.__init__(self)
 
 
-    def graphCurrentStock(self, stock):
-        stock = self.getCurrentStock()
-        self.df = tf.getDataFrame(stock, self.getCurrentTimeSeries())
-        figure = plt.figure(figsize=(4,4), dpi=100)
+    def graphCurrentStock(self, stock, timeseries):
+        self.df = tf.getDataFrame(stock, timeseries)
+        figure = plt.figure(figsize=(6,6), dpi=100)
         ax = figure.add_subplot(111)
         chart_type = FigureCanvasTkAgg(figure)
         #self.df.reset_index()
         #self.df2 = self.df.reset_index()
         #self.df2 = self.df.set_index('Date')
-        print(self.df)
+        #print(self.df)
         xlabel = 'Days since opening of time frame'
         ylabel = 'Price($)'
         chart_type.get_tk_widget().grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=20, pady=20)
-        self.df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel, title=f"{self.graphTitle()}'s stock history in {self.getCurrentTimeSeries()}")
+        self.df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel, title=f"Graph of {self.graphTitle(stock)}")
         plt.gcf().canvas.draw()
 
 
