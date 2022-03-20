@@ -48,10 +48,10 @@ class App(tk.Tk):
 
 
 
-
 class TitlePage(tk.Frame):
     def __init__(self, controller):
         tk.Frame.__init__(self)
+        #OSC.oneStock(controller)
         print('Testing if this frame can be seen')
         self.controller = controller
         self.title = tk.Label(self, text='Stock Grapher', font=('Arial', 14), bg='red')
@@ -63,6 +63,8 @@ class TitlePage(tk.Frame):
         self.oneStock.grid(row=1, column=0, rowspan=1000, sticky='s')
         self.title.grid(row=0, column=0, columnspan=1000, sticky='news')
         self.twoStocks.grid(row=1, column=2, rowspan=1000, sticky='s')
+        self.columnconfigure(0, weight=10000)
+        self.rowconfigure(0, weight=10000)
 
 
 
@@ -73,16 +75,17 @@ class TitlePage(tk.Frame):
 class oneStock(tk.Frame):
     def __init__(self, controller):
         tk.Frame.__init__(self)
-        self.controller = controller
-        self.title = tk.Label(self, text='Stock Grapher', font=('Arial', 14), bg='Blue')
+        OSC.oneStock(controller)
+        #self.controller = controller
+        #self.title = tk.Label(self, text='Stock Grapher', font=('Arial', 14), bg='Blue')
 
-        self.oneStock = tk.Button(self, text='Click here to graph one stock', bg='Red',
-                                  command=lambda: controller.show_frame("First Page"))
-        self.twoStocks = tk.Button(self, text='Click here to graph two stocks', bg='Green',
-                                   command=lambda: controller.show_frame("Second Page"))
-        self.oneStock.grid(row=1, column=0, rowspan=1000, sticky='s')
-        self.title.grid(row=0, column=0, columnspan=1000, sticky='news')
-        self.twoStocks.grid(row=1, column=2, rowspan=1000, sticky='s')
+        #self.oneStock = tk.Button(self, text='Click here to graph one stock', bg='Red',
+                                  #command=lambda: controller.show_frame("First Page"))
+        #self.twoStocks = tk.Button(self, text='Click here to graph two stocks', bg='Green',
+                                   #command=lambda: controller.show_frame("Second Page"))
+        #self.oneStock.grid(row=1, column=0, rowspan=1000, sticky='s')
+        #self.title.grid(row=0, column=0, columnspan=1000, sticky='news')
+        #self.twoStocks.grid(row=1, column=2, rowspan=1000, sticky='s')
 
 
         #print(OSC.oneStock(tk.Frame))
@@ -90,19 +93,20 @@ class oneStock(tk.Frame):
 class TwoStock(tk.Frame):
     def __init__(self, controller):
         tk.Frame.__init__(self)
-        self.controller = controller
-        self.title = tk.Label(self, text='Stock Grapher', font=('Arial', 14), bg='Pink')
+        TSC.twoStock(controller)
+        #self.controller = controller
+        #self.title = tk.Label(self, text='Stock Grapher', font=('Arial', 14), bg='Pink')
 
-        self.oneStock = tk.Button(self, text='Click here to graph one stock', bg='Orange',
-                                  command=lambda: controller.show_frame("First Page"))
-        self.twoStocks = tk.Button(self, text='Click here to graph two stocks', bg='Blue',
-                                   command=lambda: controller.show_frame("Second Page"))
-        self.Help = tk.Button(self, text='Click here for some help', bg='Brown',
-                              command=lambda: controller.show_frame("Help Page"))
-        self.oneStock.grid(row=1, column=0, rowspan=1000, sticky='s')
-        self.title.grid(row=0, column=0, columnspan=1000, sticky='news')
-        self.twoStocks.grid(row=1, column=2, rowspan=1000, sticky='s')
-        self.Help.grid(row=2, column=3, columnspan=1000, sticky='news')
+        #self.oneStock = tk.Button(self, text='Click here to graph one stock', bg='Orange',
+                                #  command=lambda: controller.show_frame("First Page"))
+        #self.twoStocks = tk.Button(self, text='Click here to graph two stocks', bg='Blue',
+         #                          command=lambda: controller.show_frame("Second Page"))
+        #self.Help = tk.Button(self, text='Click here for some help', bg='Brown',
+         #                     command=lambda: controller.show_frame("Help Page"))
+        #self.oneStock.grid(row=1, column=0, rowspan=1000, sticky='s')
+        #self.title.grid(row=0, column=0, columnspan=1000, sticky='news')
+        #self.twoStocks.grid(row=1, column=2, rowspan=1000, sticky='s')
+        #self.Help.grid(row=2, column=3, columnspan=1000, sticky='news')
 
 class helpPage(tk.Frame):
     def __init__(self, controller):
