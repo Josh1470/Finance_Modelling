@@ -12,6 +12,7 @@ class twoStock(tk.Frame):
     def __init__(self, master):
         super().__init__()
 
+
         stocks = "AMZN AAPL MSFT GOOGL FB TSLA NVDA"
         timeSeries = '1m 2m 5m 15m 30m 60m 90m 1h 1d 5d 1wk 1mo 3mo max'
 
@@ -39,6 +40,9 @@ class twoStock(tk.Frame):
         self.timeBoxChoice.grid(row=1, column=2, rowspan=4, sticky='news', padx=5, pady=5)
         self.timeBox.trace_add('write', self.getCurrentTimeSeries)
 
+        self.x = tf2.getDataFrame(self.getStockA(), self.getTimeSeries())
+        self.y = tf2.getDataFrame(self.getStockB(), self.getTimeSeries())
+
         self.mean = 'Mean'
         self.min = 'Minimum'
         self.max = 'Maximum'
@@ -54,7 +58,7 @@ class twoStock(tk.Frame):
         self.oneStock = tk.Label(text=f'Stock A is {self.getStockName(self.getStockA())}', bg='green')
         self.otherStock = tk.Label(text=f'Stock B is {self.getStockName(self.getStockB())}', bg='green')
         self.indGuide = tk.Label(text='Which Indicators wins?', bg='green')
-        self.graph = tk.Label(text=self.graphStocks(self.getStockA(), self.getStockB(), self.getCurrentTimeSeries()))
+        self.graph = tk.Label(text=self.graphStocks(self.getStockA(), self.getStockB(), self.getTimeSeries()))
         #self.getCurrentStockA()
         #self.getCurrentStockB()
 
@@ -80,29 +84,29 @@ class twoStock(tk.Frame):
         self.Ind6 = tk.Label(text='Percentage Change (%)', bg='lightblue')
 
         self.HoL1 = tk.Label(
-            text=(self.highLow(tf2.getMean(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x)
-                               , tf2.getMean(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y), self.mean)),
+            text=(self.highLow(tf2.getMean(self.getStockA(), self.getTimeSeries(), self.x)
+                               , tf2.getMean(self.getStockB(), self.getTimeSeries(), self.y), self.mean)),
             bg='orange')
 
-        self.HoL2 = tk.Label(text=(self.highLow(tf2.getMin(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x)
-                                                , tf2.getMin(self.getCurrentStockB(), self.getCurrentTimeSeries(),
+        self.HoL2 = tk.Label(text=(self.highLow(tf2.getMin(self.getStockA(), self.getTimeSeries(), self.x)
+                                                , tf2.getMin(self.getStockB(), self.getTimeSeries(),
                                                              self.y), self.min)), bg='orange')
 
-        self.HoL3 = tk.Label(text=(self.highLow(tf2.getMax(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x)
-                                                , tf2.getMax(self.getCurrentStockB(), self.getCurrentTimeSeries(),
+        self.HoL3 = tk.Label(text=(self.highLow(tf2.getMax(self.getStockA(), self.getTimeSeries(), self.x)
+                                                , tf2.getMax(self.getStockB(), self.getTimeSeries(),
                                                             self.y), self.max)), bg='orange')
 
         self.HoL4 = tk.Label(
-            text=(self.highLow(tf2.getMedian(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x)
-                                  , tf2.getMedian(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y),
+            text=(self.highLow(tf2.getMedian(self.getStockA(), self.getTimeSeries(), self.x)
+                                  , tf2.getMedian(self.getStockB(), self.getTimeSeries(), self.y),
                                self.median)), bg='orange')
 
         self.HoL5 = tk.Label(text=(self.highLow(tf2.marketCap(self.getStockA())
                                                 , tf2.marketCap(self.getStockB()), self.marketCap)), bg='orange')
 
         self.HoL6 = tk.Label(
-            text=(self.highLow(tf2.perChange(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x)
-                             , tf2.perChange(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y),
+            text=(self.highLow(tf2.perChange(self.getStockA(), self.getTimeSeries(), self.x)
+                             , tf2.perChange(self.getStockB(), self.getTimeSeries(), self.y),
                                self.percentageChange)), bg='orange')
 
         self.title.grid(row=0, column=0, columnspan=95, sticky='news')
@@ -148,7 +152,7 @@ class twoStock(tk.Frame):
         stocks = self.getStockA()
         timeseries = self.getTimeSeries()
         self.getIndicatorsA(stocks, timeseries)
-        return self.graphStocks(stocks, self.getStockB(), self.getCurrentTimeSeries())
+        return self.graphStocks(stocks, self.getStockB(), self.getTimeSeries())
 
     def getStockB(self):
         return self.stockB.get()
@@ -157,13 +161,17 @@ class twoStock(tk.Frame):
         stocks = self.getStockB()
         timeseries = self.getTimeSeries()
         self.getIndicatorsB(stocks, timeseries)
-        return self.graphStocks(self.getStockA(), stocks, self.getCurrentTimeSeries())
+        return self.graphStocks(self.getStockA(), stocks, self.getTimeSeries())
 
     def getTimeSeries(self):
         return self.timeBox.get()
 
     def getCurrentTimeSeries(self, *args):
+        stockA = self.stockA.get()
+        stockB = self.stockB.get()
         time = self.getTimeSeries()
+        self.getIndicatorsA(stockA, time)
+        self.getIndicatorsB(stockB, time)
         return self.graphStocks(self.getStockA(), self.getStockB(), time)
 
     def getIndicatorsA(self, stocks, time):
