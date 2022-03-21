@@ -18,7 +18,7 @@ class twoStock(tk.Frame):
 
         self.stockA = tk.StringVar()
         self.stockAChoice = ttk.Combobox(textvariable=self.stockA)
-        self.stockAChoice['values'] = stocks
+        self.stockAChoice['values'] = stocks                                            #This block of code creates the stockA combobox
         self.stockAChoice['state'] = 'readonly'
         self.stockAChoice.current(0)
         self.stockAChoice.grid(row=1, column=0, rowspan=4, sticky='news', padx=5, pady=5)
@@ -27,7 +27,7 @@ class twoStock(tk.Frame):
         self.stockB = tk.StringVar()
         self.stockBChoice = ttk.Combobox(textvariable=self.stockB)
         self.stockBChoice['values'] = stocks
-        self.stockBChoice['state'] = 'readonly'
+        self.stockBChoice['state'] = 'readonly'                                         #This block of code creates the stockB combobox
         self.stockBChoice.current(1)
         self.stockBChoice.grid(row=1, column=1, rowspan=4, sticky='news', padx=5, pady=5)
         self.stockBChoice.bind('<<ComboboxSelected>>', self.getCurrentStockB)
@@ -35,13 +35,13 @@ class twoStock(tk.Frame):
         self.timeBox = tk.StringVar()
         self.timeBoxChoice = ttk.Combobox(textvariable=self.timeBox)
         self.timeBoxChoice['values'] = timeSeries
-        self.timeBoxChoice['state'] = 'readonly'
+        self.timeBoxChoice['state'] = 'readonly'                                        #This block of code creates the time series combobox
         self.timeBoxChoice.current(12)
         self.timeBoxChoice.grid(row=1, column=2, rowspan=4, sticky='news', padx=5, pady=5)
         self.timeBox.trace_add('write', self.getCurrentTimeSeries)
 
-        self.x = tf2.getDataFrame(self.getStockA(), self.getTimeSeries())
-        self.y = tf2.getDataFrame(self.getStockB(), self.getTimeSeries())
+        self.x = tf2.getDataFrame(self.getStockA(), self.getTimeSeries())          #Sets up a dataframe of the stockA and time series selected
+        self.y = tf2.getDataFrame(self.getStockB(), self.getTimeSeries())          #Sets up a dataframe of the stockB and time series selected
 
         self.mean = 'Mean'
         self.min = 'Minimum'
@@ -59,6 +59,8 @@ class twoStock(tk.Frame):
         self.otherStock = tk.Label(text=f'Stock B is {self.getStockName(self.getStockB())}', bg='green')
         self.indGuide = tk.Label(text='Which Indicators wins?', bg='green')
         self.graph = tk.Label(text=self.graphStocks(self.getStockA(), self.getStockB(), self.getTimeSeries()))
+
+
         #self.getCurrentStockA()
         #self.getCurrentStockB()
 
