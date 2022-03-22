@@ -26,10 +26,10 @@ class oneStock(tk.Frame):
 
         timeSeries = '1m 2m 5m 15m 30m 60m 90m 1h 1d 5d 1wk 1mo 3mo max'
         self.timeBox = tk.StringVar()
-        self.timeBox_choice = ttk.Combobox(textvariable=timeSeries)
+        self.timeBox_choice = ttk.Combobox(textvariable=self.timeBox)
         self.timeBox_choice['values'] = timeSeries
         self.timeBox_choice['state'] = 'readonly'
-        self.timeBox_choice.current(13)
+        self.timeBox_choice.current(10)
         self.timeBox_choice.grid(row=2, column=0, sticky='news', padx=10, pady=10)
         self.timeBox.trace_add('write', self.getCurrentTimeSeries)
 
@@ -43,31 +43,31 @@ class oneStock(tk.Frame):
         # self.twoStock = tk.Button(text='Click here to go to the two stock page', bg='red', command=FG.TwoStock(controller))
         self.graph = tk.Label(text=self.graphCurrentStock(self.getStock(), self.getTimeSeries()), bg='green')
 
-        self.mean = tk.Label(bg='#5C7AB9', text=f'The mean of the stock in the time frame is ${tf.getMean(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
-        self.max = tk.Label(bg='#5C7AB9', text=f'The max of the stock in the time frame is ${tf.getMax(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
-        self.min = tk.Label(bg='#5C7AB9', text=f'The min of the stock in the time frame is ${tf.getMin(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
-        self.median = tk.Label(bg='#5C7AB9', text=f'The median of the stock in the time frame is ${tf.getMedian(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
-        self.mode = tk.Label(bg='#5C7AB9', text=f'The range of this stock in the time frame is ${tf.getRange(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
+        #self.mean = tk.Label(bg='#5C7AB9', text=f'The mean of the stock in the time frame is ${tf.getMean(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
+        #self.max = tk.Label(bg='#5C7AB9', text=f'The max of the stock in the time frame is ${tf.getMax(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
+        #self.min = tk.Label(bg='#5C7AB9', text=f'The min of the stock in the time frame is ${tf.getMin(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
+        #self.median = tk.Label(bg='#5C7AB9', text=f'The median of the stock in the time frame is ${tf.getMedian(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
+        #self.mode = tk.Label(bg='#5C7AB9', text=f'The range of this stock in the time frame is ${tf.getRange(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}')
 
-        self.PC = tk.Label(bg='#5C7AB9', text=f'The Percentage change of this stock in the time frame is {tf.perChange(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}%')
-        self.peRatio = tk.Label(bg='#5C7AB9', text=f'The price to earnings ratio of this stock in the time frame is {tf.peRatio(self.getStock())}')
-        self.marketCap = tk.Label(bg='#5C7AB9', text=f'The market cap of this stock in the time frame {tf.marketCap(self.getStock())}T')
-        self.yearlyHigh = tk.Label(bg='#5C7AB9', text=f'The yearly high of this stock is ${tf.getYearlyHigh(self.getStock())}')
-        self.yearlyLow = tk.Label(bg='#5C7AB9', text=f'The yearly low of this stock is ${tf.getYearlyLow(self.getStock())}')
+        #self.PC = tk.Label(bg='#5C7AB9', text=f'The Percentage change of this stock in the time frame is {tf.perChange(self.getCurrentStock(), self.getCurrentTimeSeries(), self.x)}%')
+        #self.peRatio = tk.Label(bg='#5C7AB9', text=f'The price to earnings ratio of this stock in the time frame is {tf.peRatio(self.getStock())}')
+        #self.marketCap = tk.Label(bg='#5C7AB9', text=f'The market cap of this stock in the time frame {tf.marketCap(self.getStock())}T')
+        #self.yearlyHigh = tk.Label(bg='#5C7AB9', text=f'The yearly high of this stock is ${tf.getYearlyHigh(self.getStock())}')
+        #self.yearlyLow = tk.Label(bg='#5C7AB9', text=f'The yearly low of this stock is ${tf.getYearlyLow(self.getStock())}')
 
 
         self.title.grid(row=0, column=0, columnspan=12, sticky='news')
 
-        self.mean.grid(row=4, column=0, rowspan=1, sticky='news', pady=5, padx=5)
-        self.max.grid(row=5, column=0, rowspan=1, sticky='news', pady=5, padx=5)
-        self.min.grid(row=6, column=0, rowspan=1, sticky='news', pady=5, padx=5)
-        self.median.grid(row=7, column=0, rowspan=1, sticky='news', pady=5, padx=5)
-        self.mode.grid(row=8, column=0, rowspan=1, sticky='news', pady=5, padx=5)
-        self.peRatio.grid(row=9, column=0, rowspan=1, sticky='news', pady=5, padx=5)
-        self.PC.grid(row=10, column=0, rowspan=1, sticky='news', pady=5, padx=5)
-        self.marketCap.grid(row=11, column=0, rowspan=1, sticky='news', pady=5, padx=5)
-        self.yearlyHigh.grid(row=12, column=0, rowspan=1, sticky='news', pady=5, padx=5)
-        self.yearlyLow.grid(row=13, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        #self.mean.grid(row=4, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        #self.max.grid(row=5, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        #self.min.grid(row=6, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        #self.median.grid(row=7, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        #self.mode.grid(row=8, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        #self.peRatio.grid(row=9, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        #self.PC.grid(row=10, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        #self.marketCap.grid(row=11, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        #self.yearlyHigh.grid(row=12, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        #self.yearlyLow.grid(row=13, column=0, rowspan=1, sticky='news', pady=5, padx=5)
 
         #self.homePage.grid(row=14,column=0, columnspan=9, sticky='news')
         #self.help.grid(row=15, column=0, columnspan=9, sticky='news')
@@ -85,14 +85,52 @@ class oneStock(tk.Frame):
 
     def getCurrentStock(self, *args):
         stocks = self.getStock()
+        time = self.getTimeSeries()
+        self.getIndicators(stocks, time)
         return self.graphCurrentStock(stocks, self.getTimeSeries())
+
+    def getIndicators(self, stocks, time):
+        self.x = tf.getDataFrame(stocks, time)
+        self.mean = tk.Label(bg='#5C7AB9',
+                             text=f'The mean of the stock in the time frame is ${tf.getMean(stocks, time, self.x)}')
+        self.max = tk.Label(bg='#5C7AB9',
+                            text=f'The max of the stock in the time frame is ${tf.getMax(stocks, time, self.x)}')
+        self.min = tk.Label(bg='#5C7AB9',
+                            text=f'The min of the stock in the time frame is ${tf.getMin(stocks, time, self.x)}')
+        self.median = tk.Label(bg='#5C7AB9',
+                               text=f'The median of the stock in the time frame is ${tf.getMedian(stocks, time, self.x)}')
+        self.mode = tk.Label(bg='#5C7AB9',
+                             text=f'The range of this stock in the time frame is ${tf.getRange(stocks, time, self.x)}')
+        self.PC = tk.Label(bg='#5C7AB9',
+                           text=f'The Percentage change of this stock in the time frame is {tf.perChange(stocks, time, self.x)}%')
+        self.peRatio = tk.Label(bg='#5C7AB9',
+                                text=f'The price to earnings ratio of this stock in the time frame is {tf.peRatio(stocks)}')
+        self.marketCap = tk.Label(bg='#5C7AB9',
+                                  text=f'The market cap of this stock in the time frame {tf.marketCap(stocks)}T')
+        self.yearlyHigh = tk.Label(bg='#5C7AB9',
+                                   text=f'The yearly high of this stock is ${tf.getYearlyHigh(stocks)}')
+        self.yearlyLow = tk.Label(bg='#5C7AB9',
+                                  text=f'The yearly low of this stock is ${tf.getYearlyLow(stocks)}')
+
+        self.mean.grid(row=4, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        self.max.grid(row=5, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        self.min.grid(row=6, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        self.median.grid(row=7, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        self.mode.grid(row=8, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        self.peRatio.grid(row=9, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        self.PC.grid(row=10, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        self.marketCap.grid(row=11, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        self.yearlyHigh.grid(row=12, column=0, rowspan=1, sticky='news', pady=5, padx=5)
+        self.yearlyLow.grid(row=13, column=0, rowspan=1, sticky='news', pady=5, padx=5)
 
     def getTimeSeries(self):
         return self.timeBox.get()
 
 
     def getCurrentTimeSeries(self, *args):
+        stock = self.getStock()
         time = self.getTimeSeries()
+        self.getIndicators(stock, time)
         return self.graphCurrentStock(self.getStock(), time)
 
     def graphTitle(self, word):
@@ -129,12 +167,12 @@ class oneStock(tk.Frame):
         chart_type = FigureCanvasTkAgg(figure)
         #self.df.reset_index()
         #self.df2 = self.df.reset_index()
-        #self.df2 = self.df.set_index('Date')
+        self.df2 = self.df.set_index('Date')
         #print(self.df)
         xlabel = 'Days since opening of time frame'
         ylabel = 'Price($)'
         chart_type.get_tk_widget().grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=20, pady=20)
-        self.df.plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel, title=f"Graph of {self.graphTitle(stock)}")
+        self.df2['Open'].plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel, title=f"Graph of {self.graphTitle(stock)}")
         plt.gcf().canvas.draw()
 
 
