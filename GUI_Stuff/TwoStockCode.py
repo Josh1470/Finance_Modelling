@@ -58,7 +58,7 @@ class twoStock(tk.Frame):
         self.oneStock = tk.Label(text=f'Stock A is {self.getStockName(self.getStockA())}', bg='green')
         self.otherStock = tk.Label(text=f'Stock B is {self.getStockName(self.getStockB())}', bg='green')
         self.indGuide = tk.Label(text='Which Indicators wins?', bg='green')
-        self.graph = tk.Label(text=self.graphStocks(self.getStockA(), self.getStockB(), self.getTimeSeries()))
+        self.graph = tk.Label(text=self.getCurrentTimeSeries())
 
 
         #self.getCurrentStockA()
