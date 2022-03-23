@@ -45,7 +45,7 @@ def getStockDataFrame(stock, timeseries):
 #
 # stock = [x, y]
 
-def getMean(stock, timeseries, df):
+def getMean(df):
     column = df['Open']
     meanUnr = column.mean()
     meanRou = round(meanUnr, 2)
@@ -54,7 +54,7 @@ def getMean(stock, timeseries, df):
 
 
 
-def getMin(stock, timeseries, df):
+def getMin(df):
     column = df['Open']
     minUnr = column.min()
     minRou = round(minUnr, 2)
@@ -63,7 +63,7 @@ def getMin(stock, timeseries, df):
 
 
 
-def getMax(stock, timeseries, df):
+def getMax(df):
     column = df['Open']
     maxUnr = column.max()
     maxRou = round(maxUnr, 2)
@@ -71,14 +71,14 @@ def getMax(stock, timeseries, df):
 
 
 
-def getMedian(stock, timeseries, df):
+def getMedian(df):
     column = df['Open']
     medUnr = column.median()
     medRou = round(medUnr, 2)
     return medRou
 
 
-def getRange(stock, timeseries, df):
+def getRange(df):
     column = df['Open']
     Max = column.max()
     Min = column.min()
@@ -87,7 +87,7 @@ def getRange(stock, timeseries, df):
     return ranRou
 
 
-def perChange(stock, timeseries, df):
+def perChange(df):
     column = df['Open']
     First = column.iloc[0]
     Last = column.iloc[-1]

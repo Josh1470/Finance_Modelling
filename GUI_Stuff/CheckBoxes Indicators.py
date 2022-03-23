@@ -26,6 +26,7 @@ class checkIndicators(tk.Frame):
 
 
 
+
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Stock Grapher")

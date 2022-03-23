@@ -165,11 +165,8 @@ class oneStock(tk.Frame):
         figure = plt.figure(figsize=(6,6), dpi=100)
         ax = figure.add_subplot(111)
         chart_type = FigureCanvasTkAgg(figure)
-        #self.df.reset_index()
-        #self.df2 = self.df.reset_index()
         self.df['ma'] = self.df['Open'].rolling(window=3).mean()
         self.df2 = self.df.set_index('Date')
-        #print(self.df)
         xlabel = 'Days since opening of time frame'
         ylabel = 'Price($)'
         chart_type.get_tk_widget().grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=20, pady=20)
