@@ -29,7 +29,7 @@ class oneStock(tk.Frame):
         self.timeBox_choice = ttk.Combobox(textvariable=self.timeBox)
         self.timeBox_choice['values'] = timeSeries
         self.timeBox_choice['state'] = 'readonly'
-        self.timeBox_choice.current(13)
+        self.timeBox_choice.current(12)
         self.timeBox_choice.grid(row=2, column=0, sticky='news', padx=10, pady=10)
         self.timeBox.trace_add('write', self.getCurrentTimeSeries)
 
@@ -165,13 +165,14 @@ class oneStock(tk.Frame):
         figure = plt.figure(figsize=(6,6), dpi=100)
         ax = figure.add_subplot(111)
         chart_type = FigureCanvasTkAgg(figure)
-        self.df['ma'] = self.df['Open'].rolling(window=3).mean()
+        self.df['ma'] = self.df['Open'].rolling(window=10).mean()
         self.df2 = self.df.set_index('Date')
         xlabel = 'Days since opening of time frame'
         ylabel = 'Price($)'
         chart_type.get_tk_widget().grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=20, pady=20)
         self.df2['Open'].plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel, title=f"Graph of {self.graphTitle(stock)}")
-        self.df2['ma'].plot()
+        if timeseries != 'max':
+            self.df2['ma'].plot()
         plt.gcf().canvas.draw()
         plt.legend([self.graphTitle(stock),f'Moving average of {self.graphTitle(stock)}'])
 

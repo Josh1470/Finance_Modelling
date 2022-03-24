@@ -25,7 +25,7 @@ class App(tk.Tk):
                        'Second Page': TwoStock(self),
                        'Help Page': helpPage(self)}
 
-        self.show_frame('Main Menu')
+        self.show_frame(self.frames['Main Menu'])
         # for F in self.frames:
         #     page_name = F.__name__
         #     frame = F(controller=self)
@@ -35,14 +35,18 @@ class App(tk.Tk):
 
 
     def show_frame(self, page_name, *args, **kwargs):
-        frame = self.frames[page_name]
-        frame.grid(row=0, column=0, sticky='news')
+        self.forget_frame()
+        #frame = self.frames[page_name]
+        #frame.grid(row=0, column=0, sticky='news')
+        page_name.grid(row=0, column=0)
+
+        #frame.tkraise(self.show_frame(page_name))
+
+    def forget_frame(self):
         widgets = self.winfo_children()
         for w in widgets:
             if w.winfo_class() == "Frame":
                 w.grid_forget()
-        frame.grid(row=0, column=0, rowspan=1000, columnspan=1000)
-        #frame.tkraise(self.show_frame(page_name))
 
 
 
@@ -57,14 +61,14 @@ class TitlePage(tk.Frame):
         self.title = tk.Label(self, text='Stock Grapher', font=('Arial', 14), bg='red')
 
         self.oneStock = tk.Button(self, text='Click here to graph one stock', bg='Blue',
-                                  command=lambda: controller.show_frame("First Page"))
+                                  command=lambda: controller.show_frame(controller.frames["First Page"]))
         self.twoStocks = tk.Button(self, text='Click here to graph two stocks', bg='Pink',
-                                   command=lambda: controller.show_frame("Second Page"))
+                                   command=lambda: controller.show_frame(controller.frames["Second Page"]))
         self.oneStock.grid(row=1, column=0, rowspan=1000, sticky='s')
         self.title.grid(row=0, column=0, columnspan=1000, sticky='news')
         self.twoStocks.grid(row=1, column=2, rowspan=1000, sticky='s')
-        self.columnconfigure(0, weight=10000)
-        self.rowconfigure(0, weight=10000)
+        #self.columnconfigure(0, weight=10000)
+        #self.rowconfigure(0, weight=10000)
 
 
 
