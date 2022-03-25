@@ -63,29 +63,6 @@ class twoStock(tk.Frame):
         self.getIndicatorsA(self.getStockA(), self.getTimeSeries())
         self.getIndicatorsB(self.getStockB(), self.getTimeSeries())
 
-        # self.getCurrentStockA()
-        # self.getCurrentStockB()
-
-        # self.Mean1 = tk.Label(text=tf2.getMean(self.getStockA(), self.getCurrentStockB(), self.x))
-        # self.Min1 = tk.Label(text=tf2.getMin(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
-        # self.Max1 = tk.Label(text=tf2.getMax(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
-        # self.Median1 = tk.Label(text=tf2.getMedian(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
-        # self.MarketCap1 = tk.Label(text=tf2.marketCap(self.getStockA()))
-        # self.PC1 = tk.Label(text=tf2.perChange(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
-
-        # self.Mean2 = tk.Label(text=tf2.getMean(self.getCurrentStockA(), self.getCurrentStockB(), self.y))
-        # self.Min2 = tk.Label(text=tf2.getMin(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
-        # self.Max2 = tk.Label(text=tf2.getMax(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
-        # self.Median2 = tk.Label(text=tf2.getMedian(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
-        # self.MarketCap2 = tk.Label(text=tf2.marketCap(self.getStockB()))
-        # self.PC2 = tk.Label(text=tf2.perChange(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
-
-        # self.Ind1 = tk.Label(text='Mean', bg='lightblue')
-        # self.Ind2 = tk.Label(text='Min', bg='lightblue')
-        # self.Ind3 = tk.Label(text='Max', bg='lightblue')
-        # self.Ind4 = tk.Label(text='Median', bg='lightblue')
-        # self.Ind5 = tk.Label(text='Market Cap (T)', bg='lightblue')
-        # self.Ind6 = tk.Label(text='Percentage Change (%)', bg='lightblue')
 
     def UpdateHighLow(self, DataA, DataB):
         self.HoL1 = tk.Label(
@@ -241,8 +218,6 @@ class twoStock(tk.Frame):
         plt.legend([self.getStockName(self.getStockA()), f'Moving Average of {self.getStockName(self.getStockA())}',
                     self.getStockName(self.getStockB()),
                     f'Moving Average of {self.getStockName(self.getStockB())}'])  # Adds a key to the graph
-        # plt.legend([self.getStockName(self.getStockA()), self.getStockName(self.getStockB())])
-        # self.changeIndicators()
 
         plt.gcf().canvas.draw()
 
