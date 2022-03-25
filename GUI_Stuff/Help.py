@@ -39,11 +39,11 @@ class Help(tk.Frame):
 
         for i in range(len(questions)):
             Question = tk.Label(bg='lightblue', text=questions[i])
-            Question.grid(row=QuestionRow[i], column=1, padx=5, pady=5)
+            Question.grid(row=QuestionRow[i], column=1, padx=5, pady=5)  # Loops through the questions and grids them based on Question row list
 
         for i in range(len(answers)):
             Answer = tk.Label(text=answers[i])
-            Answer.grid(row=AnswerRow[i], column=1)
+            Answer.grid(row=AnswerRow[i], column=1)  #Loops through the answers and grids them based on the Answer row list
 
         self.mainMenu = tk.Button(bg='red', text='Click to return to Main Menu')
         self.oneStock = tk.Button(bg='orange', text='Click to go to the OneStock page')

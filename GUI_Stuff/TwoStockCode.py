@@ -1,24 +1,21 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter.messagebox import showinfo
-from Tests import TestFunctions2 as tf2
 import matplotlib.pyplot as plt
-import pandas as pd
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from Tests import TestFunctions2 as tf2
 
 
 class twoStock(tk.Frame):
     def __init__(self, master):
         super().__init__()
 
-
         stocks = "AMZN AAPL MSFT GOOGL FB TSLA NVDA"
         timeSeries = '1m 2m 5m 15m 30m 60m 90m 1h 1d 5d 1wk 1mo 3mo max'
 
         self.stockA = tk.StringVar()
         self.stockAChoice = ttk.Combobox(textvariable=self.stockA)
-        self.stockAChoice['values'] = stocks                                            #This block of code creates the stockA combobox
+        self.stockAChoice['values'] = stocks  # This block of code creates the stockA combobox
         self.stockAChoice['state'] = 'readonly'
         self.stockAChoice.current(0)
         self.stockAChoice.grid(row=1, column=0, rowspan=4, sticky='news', padx=5, pady=5)
@@ -27,7 +24,7 @@ class twoStock(tk.Frame):
         self.stockB = tk.StringVar()
         self.stockBChoice = ttk.Combobox(textvariable=self.stockB)
         self.stockBChoice['values'] = stocks
-        self.stockBChoice['state'] = 'readonly'                                         #This block of code creates the stockB combobox
+        self.stockBChoice['state'] = 'readonly'  # This block of code creates the stockB combobox
         self.stockBChoice.current(1)
         self.stockBChoice.grid(row=1, column=1, rowspan=4, sticky='news', padx=5, pady=5)
         self.stockBChoice.bind('<<ComboboxSelected>>', self.getCurrentStockB)
@@ -35,13 +32,15 @@ class twoStock(tk.Frame):
         self.timeBox = tk.StringVar()
         self.timeBoxChoice = ttk.Combobox(textvariable=self.timeBox)
         self.timeBoxChoice['values'] = timeSeries
-        self.timeBoxChoice['state'] = 'readonly'                                        #This block of code creates the time series combobox
+        self.timeBoxChoice['state'] = 'readonly'  # This block of code creates the time series combobox
         self.timeBoxChoice.current(12)
         self.timeBoxChoice.grid(row=1, column=2, rowspan=4, sticky='news', padx=5, pady=5)
         self.timeBox.trace_add('write', self.getCurrentTimeSeries)
 
-        self.x = tf2.getDataFrame(self.getStockA(), self.getTimeSeries())          #Sets up a dataframe of the stockA and time series selected
-        self.y = tf2.getDataFrame(self.getStockB(), self.getTimeSeries())          #Sets up a dataframe of the stockB and time series selected
+        self.x = tf2.getDataFrame(self.getStockA(),
+                                  self.getTimeSeries())  # Sets up a dataframe of the stockA and time series selected
+        self.y = tf2.getDataFrame(self.getStockB(),
+                                  self.getTimeSeries())  # Sets up a dataframe of the stockB and time series selected
 
         self.mean = 'Mean'
         self.min = 'Minimum'
@@ -64,30 +63,29 @@ class twoStock(tk.Frame):
         self.getIndicatorsA(self.getStockA(), self.getTimeSeries())
         self.getIndicatorsB(self.getStockB(), self.getTimeSeries())
 
+        # self.getCurrentStockA()
+        # self.getCurrentStockB()
 
-        #self.getCurrentStockA()
-        #self.getCurrentStockB()
+        # self.Mean1 = tk.Label(text=tf2.getMean(self.getStockA(), self.getCurrentStockB(), self.x))
+        # self.Min1 = tk.Label(text=tf2.getMin(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
+        # self.Max1 = tk.Label(text=tf2.getMax(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
+        # self.Median1 = tk.Label(text=tf2.getMedian(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
+        # self.MarketCap1 = tk.Label(text=tf2.marketCap(self.getStockA()))
+        # self.PC1 = tk.Label(text=tf2.perChange(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
 
-        #self.Mean1 = tk.Label(text=tf2.getMean(self.getStockA(), self.getCurrentStockB(), self.x))
-        #self.Min1 = tk.Label(text=tf2.getMin(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
-        #self.Max1 = tk.Label(text=tf2.getMax(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
-        #self.Median1 = tk.Label(text=tf2.getMedian(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
-        #self.MarketCap1 = tk.Label(text=tf2.marketCap(self.getStockA()))
-        #self.PC1 = tk.Label(text=tf2.perChange(self.getCurrentStockA(), self.getCurrentTimeSeries(), self.x))
+        # self.Mean2 = tk.Label(text=tf2.getMean(self.getCurrentStockA(), self.getCurrentStockB(), self.y))
+        # self.Min2 = tk.Label(text=tf2.getMin(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
+        # self.Max2 = tk.Label(text=tf2.getMax(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
+        # self.Median2 = tk.Label(text=tf2.getMedian(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
+        # self.MarketCap2 = tk.Label(text=tf2.marketCap(self.getStockB()))
+        # self.PC2 = tk.Label(text=tf2.perChange(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
 
-        #self.Mean2 = tk.Label(text=tf2.getMean(self.getCurrentStockA(), self.getCurrentStockB(), self.y))
-        #self.Min2 = tk.Label(text=tf2.getMin(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
-        #self.Max2 = tk.Label(text=tf2.getMax(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
-        #self.Median2 = tk.Label(text=tf2.getMedian(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
-        #self.MarketCap2 = tk.Label(text=tf2.marketCap(self.getStockB()))
-        #self.PC2 = tk.Label(text=tf2.perChange(self.getCurrentStockB(), self.getCurrentTimeSeries(), self.y))
-
-        #self.Ind1 = tk.Label(text='Mean', bg='lightblue')
-        #self.Ind2 = tk.Label(text='Min', bg='lightblue')
-        #self.Ind3 = tk.Label(text='Max', bg='lightblue')
-        #self.Ind4 = tk.Label(text='Median', bg='lightblue')
-        #self.Ind5 = tk.Label(text='Market Cap (T)', bg='lightblue')
-        #self.Ind6 = tk.Label(text='Percentage Change (%)', bg='lightblue')
+        # self.Ind1 = tk.Label(text='Mean', bg='lightblue')
+        # self.Ind2 = tk.Label(text='Min', bg='lightblue')
+        # self.Ind3 = tk.Label(text='Max', bg='lightblue')
+        # self.Ind4 = tk.Label(text='Median', bg='lightblue')
+        # self.Ind5 = tk.Label(text='Market Cap (T)', bg='lightblue')
+        # self.Ind6 = tk.Label(text='Percentage Change (%)', bg='lightblue')
 
     def UpdateHighLow(self, DataA, DataB):
         self.HoL1 = tk.Label(
@@ -103,7 +101,7 @@ class twoStock(tk.Frame):
 
         self.HoL4 = tk.Label(
             text=(self.highLow(tf2.getMedian(DataA)
-                                  , tf2.getMedian(DataB),
+                               , tf2.getMedian(DataB),
                                self.median)), bg='orange')
 
         self.HoL5 = tk.Label(text=(self.highLow(tf2.marketCap(self.getStockA())
@@ -111,7 +109,7 @@ class twoStock(tk.Frame):
 
         self.HoL6 = tk.Label(
             text=(self.highLow(tf2.perChange(DataA)
-                             , tf2.perChange(DataB),
+                               , tf2.perChange(DataB),
                                self.percentageChange)), bg='orange')
 
         self.title.grid(row=0, column=0, columnspan=95, sticky='news')
@@ -190,7 +188,6 @@ class twoStock(tk.Frame):
         self.MarketCap1 = tk.Label(text=tf2.marketCap(stocks))
         self.PC1 = tk.Label(text=tf2.perChange(self.x))
 
-
         self.Mean1.grid(row=6, column=1, sticky='news')
         self.Min1.grid(row=7, column=1, sticky='news')
         self.Max1.grid(row=8, column=1, sticky='news')
@@ -205,7 +202,7 @@ class twoStock(tk.Frame):
         self.y = tf2.getDataFrame(stocks, time)
         self.Mean2 = tk.Label(text=tf2.getMean(self.y))
         self.Min2 = tk.Label(text=tf2.getMin(self.y))
-        self.Max2 = tk.Label(text=tf2.getMax( self.y))
+        self.Max2 = tk.Label(text=tf2.getMax(self.y))
         self.Median2 = tk.Label(text=tf2.getMedian(self.y))
         self.MarketCap2 = tk.Label(text=tf2.marketCap(stocks))
         self.PC2 = tk.Label(text=tf2.perChange(self.y))
@@ -227,27 +224,27 @@ class twoStock(tk.Frame):
         xlabel = 'Days since opening of time frame'
         ylabel = 'Logarithmic rate of returns'
         chart_type.get_tk_widget().grid(row=1, column=4, rowspan=13, columnspan=9, sticky='news', padx=20, pady=20)
-        self.stockList = [stockA, stockB]
+        self.stockList = [stockA, stockB] #Creates a list of the two selected stocks
         for stock in self.stockList:
             self.df = tf2.getDataFrame(stock, time)
-            self.df['log_ret'] = np.log(self.df['Open']) - np.log(self.df['Open'].shift(1))
-            self.df['cum_sum'] = self.df['log_ret'].cumsum()
-            self.df['ma'] = self.df['cum_sum'].rolling(window=10).mean()
+            self.df['log_ret'] = np.log(self.df['Open']) - np.log(self.df['Open'].shift(1)) # Calculates logarithmic returns each day of
+            # the dataframe
+            self.df['cum_sum'] = self.df['log_ret'].cumsum() # Finds the culumative sum of the logarithmic returns column
+            self.df['ma'] = self.df['cum_sum'].rolling(window=10).mean() # Creates a moving average column based on the cum_sum column
             print(self.df)
-            self.df2 = self.df.set_index('Date')
-            self.df2['cum_sum'].plot(kind='line', legend=True, ax=ax,  xlabel=xlabel, ylabel=ylabel,
-                                    title=f'Graph of {self.getStockName(self.getStockA())} and {self.getStockName(self.getStockB())}')
+            self.df2 = self.df.set_index('Date') #Sets the index of the dataframe to the Date column
+            self.df2['cum_sum'].plot(kind='line', legend=True, ax=ax, xlabel=xlabel, ylabel=ylabel,
+                                     title=f'Graph of {self.getStockName(self.getStockA())} and {self.getStockName(self.getStockB())}')  # Plots
+            # the cumulative sum of the logarithmic returns
             self.df2['ma'].plot()
 
         plt.legend([self.getStockName(self.getStockA()), f'Moving Average of {self.getStockName(self.getStockA())}',
-        self.getStockName(self.getStockB()),f'Moving Average of {self.getStockName(self.getStockB())}'])
-        #plt.legend([self.getStockName(self.getStockA()), self.getStockName(self.getStockB())])
-        #self.changeIndicators()
-
+                    self.getStockName(self.getStockB()),
+                    f'Moving Average of {self.getStockName(self.getStockB())}'])  # Adds a key to the graph
+        # plt.legend([self.getStockName(self.getStockA()), self.getStockName(self.getStockB())])
+        # self.changeIndicators()
 
         plt.gcf().canvas.draw()
-
-
 
     def highLow(self, stock1val, stock2val, indicator):
         self.stock1val = stock1val
@@ -257,6 +254,10 @@ class twoStock(tk.Frame):
             return f'{self.getStockA()} has a higher {self.indicator} than {self.getStockB()}'
         elif self.stock1val < self.stock2val:
             return f'{self.getStockB()} has a higher {self.indicator} than {self.getStockA()}'
+
+        #This function returns which stock performed better in a given indicator
+
+
 
     def split(self, word):
         return [char for char in word]
@@ -278,7 +279,6 @@ class twoStock(tk.Frame):
             return 'Telsa (TSLA)'
         elif temp[0] == 'N':
             return 'Nvidia (NVDA)'
-
 
 
 if __name__ == "__main__":

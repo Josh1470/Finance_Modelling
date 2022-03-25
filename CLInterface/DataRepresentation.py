@@ -12,37 +12,37 @@ from CLInterface import GetStockName as GSC
 class graphStockData:
     def __init__(self):
         self.time_series = ['1m, 2m , 5m, 15m, 30m, 60m, 90m, 1h, 1d, 5d, 1wk, 1mo, 3mo and max']
-        self.time = 0
+        self.time = 0                       #Defines key attributes for this class
         self.stocks = ['AMZN, AAPL, MSFT, GOOGL, FB, TSLA, NVDA']
         graphStockData.setOutStock(self)
 
     def setOutStock(self):
-        print(f'Stocks include {self.stocks}')
+        print(f'Stocks include {self.stocks}') #Prints out the stock list for the user to view
         graphStockData.chooseStock(self)
 
     def chooseStock(self):
-        self.stockInfo = input('Enter Stock You Would Like to View').upper()
+        self.stockInfo = input('Enter Stock You Would Like to View').upper() #Asks the user to input a stock they want to graph, and makes
+        #the capiltilises the entire input as required by yFinance
         graphStockData.changeTimeSeries(self)
 
 
     def changeTimeSeries(self):
         print(f'''Availiable time series include : 
-              {self.time_series}''')
-        self.time = input('What time series would you like to view?')
-        #if self.time not in self.time_series:
-            #raise AttributeError
+              {self.time_series}''') #Prints out the time series list for the user to view
+        self.time = input('What time series would you like to view?') #Asks the user to input a time series they would like to see used when
+        #graphing the stock
         graphStockData.graphDesign(self)
 
     def graphDesign(self):
-        self.colourInitial = ['b', 'g', 'r', 'c', 'm', 'y' ,'k', 'w']
-        self.colour = ['blue','green','red','cyan','magenta','yellow','black','white']
-        for i in range(len(self.colourInitial)):
+        self.colourInitial = ['b', 'g', 'r', 'c', 'm', 'y' ,'k', 'w'] #Outlines the initials of the colour that can be graphed
+        self.colour = ['blue','green','red','cyan','magenta','yellow','black','white'] #Outlines the names of the colours that can be graphed
+        for i in range(len(self.colourInitial)): #Loops through the colourInitial list
             print(f'Input {self.colourInitial[i]} for {self.colour[i]}')
-        self.colourChoice = input('What colour would you like?')
+        self.colourChoice = input('What colour would you like?') #Asks the user to input a colour for the line to have
         graphStockData.graph(self)
 
     def getName(self):
-        temp = self.stockInfo
+        temp = self.stockInfo #Makes the temp equal to the stock the user has inputted
         if temp == 'AAPL':
             return 'Apple'
         elif temp == 'AMZN':
@@ -77,7 +77,7 @@ class graphStockData:
         plt.plot(x, y, self.colourChoice)
         plt.ylabel('Price($)')
         plt.xlabel('Date', rotation=0)
-        plt.title(f"Graph of {self.getName()}'s stock")
+        plt.title(f"Graph of {self.getName()}'s stock") #Graphs the stock
         plt.show()
         graphStockData.stats(self)
 
@@ -87,15 +87,15 @@ class graphStockData:
         self.column = self.df['Open']
         max_value = self.column.max()
         max_value = max_value.round(2)
-        print(f'The maximum value of this stock in the time frame selected is {max_value}')
+        print(f'The maximum value of this stock in the time frame selected is {max_value}') #Finds the max value of the stock in the time frame
 
         min_value = self.column.min()
         min_value = min_value.round(2)
-        print(f'The minimum value of this stock in the time frame selected is {min_value}')
+        print(f'The minimum value of this stock in the time frame selected is {min_value}') #Finds the min value of the stock in the time frame
 
         mean_value = self.column.mean()
         mean_value = mean_value.round(2)
-        print(f'The mean value of this stock is {mean_value}')
+        print(f'The mean value of this stock is {mean_value}') #Finds the mean value of the stock in the time frame
         graphStockData.calcPercentage(self)
 
     def calcPercentage(self):
@@ -103,17 +103,18 @@ class graphStockData:
         self.Last = self.df['Open'].iloc[-1]
         self.change = (self.Last / self.First) * 100
         self.change = self.change.round(2)
-        print(f'The stock {self.stockInfo} has increased by {self.change}% in {self.time}')
+        print(f'The stock {self.stockInfo} has increased by {self.change}% in {self.time}') #Calculates the percentage change of the stock from
+        #first dataframe entry to last dataframe entry
         graphStockData.moreIndicatiors(self)
 
     def moreIndicatiors(self):
         self.yahooFinance = yF(self.stockInfo)
         self.quoteTable = yF.get_pe_ratio(self.yahooFinance)
-        print(f'Price Earnings ratio is {self.quoteTable}')
+        print(f'Price Earnings ratio is {self.quoteTable}') #Returns the P/E ratio of the stock
 
         self.marketCap = yF.get_market_cap(self.yahooFinance)
         self.mc = self.marketCap/1000000000000
-        print(f'Market cap is {self.mc}')
+        print(f'Market cap is {self.mc}') #Returns the market cap of the stock
 
 
 
